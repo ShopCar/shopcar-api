@@ -15,6 +15,7 @@ import {
 
 import Car from "./car.enttity";
 import Address from "./address.entity";
+import Comment from "./comments.entity";
 
 @Entity("users")
 class User {
@@ -66,6 +67,9 @@ class User {
 
 	@OneToMany(() => Car, car => car.user)
 	cars: Car[];
+
+	@OneToMany(() => Comment, comment => comment.user)
+	comments: Comment[];
 }
 
 export default User;

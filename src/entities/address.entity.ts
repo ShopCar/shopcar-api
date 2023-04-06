@@ -1,4 +1,11 @@
-import { Column, Entity, OneToOne, PrimaryGeneratedColumn } from "typeorm";
+import {
+	Column,
+	Entity,
+	OneToOne,
+	CreateDateColumn,
+	UpdateDateColumn,
+	PrimaryGeneratedColumn
+} from "typeorm";
 
 import User from "./user.enttity";
 
@@ -27,6 +34,12 @@ class Address {
 
 	@Column({ type: "varchar", nullable: true, length: 30 })
 	complement: string | null | undefined;
+
+	@CreateDateColumn({ type: "date" })
+	createdAt: string;
+
+	@UpdateDateColumn({ type: "date" })
+	updatedAt: string;
 
 	@OneToOne(() => User, user => user.address)
 	user: User;

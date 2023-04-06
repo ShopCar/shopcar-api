@@ -5,10 +5,15 @@ import {
 	CreateDateColumn,
 	UpdateDateColumn,
 	DeleteDateColumn,
-	PrimaryGeneratedColumn
+	PrimaryGeneratedColumn,
+	OneToOne,
+	JoinColumn,
+	OneToMany
 } from "typeorm";
 
 import User from "./user.enttity";
+import Images from "./images.entity";
+import Comment from "./comments.entity";
 
 @Entity("cars")
 class Car {
@@ -40,9 +45,6 @@ class Car {
 	isPublished: boolean;
 
 	@Column({ type: "decimal", scale: 2, precision: 12 })
-	fipe: string | number;
-
-	@Column({ type: "decimal", scale: 2, precision: 12 })
 	price: string | number;
 
 	@Column({ type: "int" })
@@ -54,11 +56,15 @@ class Car {
 	@UpdateDateColumn({ type: "date" })
 	updatedAt: string;
 
-	@DeleteDateColumn({ type: "date", nullable: true })
-	deletedAt: string | null;
+	@JoinColumn()
+	@OneToOne(() => Images, images => images.car)
+	images: Images;
 
 	@ManyToOne(() => User, user => user.cars)
 	user: User;
+
+	@OneToMany(() => Comment, comment => comment.car)
+	comments: Comment[];
 }
 
 export default Car;
