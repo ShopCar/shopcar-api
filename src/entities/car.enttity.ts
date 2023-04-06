@@ -1,11 +1,13 @@
 import {
 	Entity,
 	Column,
-	PrimaryGeneratedColumn,
+	ManyToOne,
 	CreateDateColumn,
 	UpdateDateColumn,
-	ManyToOne
+	DeleteDateColumn,
+	PrimaryGeneratedColumn
 } from "typeorm";
+
 import User from "./user.enttity";
 
 @Entity("cars")
@@ -13,25 +15,25 @@ class Car {
 	@PrimaryGeneratedColumn("uuid")
 	id: string;
 
-	@Column({ length: 30 })
+	@Column({ type: "varchar", length: 30 })
 	brand: string;
 
-	@Column({ length: 50 })
+	@Column({ type: "varchar", length: 50 })
 	model: string;
 
-	@Column({ type: "year" })
-	year: number;
+	@Column({ type: "varchar", length: 4 })
+	year: string;
 
-	@Column({ length: 20 })
+	@Column({ type: "varchar", length: 20 })
 	fuel: string;
 
-	@Column({ type: "int" })
-	km: number;
+	@Column({ type: "decimal", scale: 2, precision: 12 })
+	km: string | number;
 
-	@Column({ length: 20 })
+	@Column({ type: "varchar", length: 30 })
 	color: string;
 
-	@Column({ type: "text" })
+	@Column({ type: "text", nullable: true })
 	description: string;
 
 	@Column({ default: true })
@@ -43,11 +45,17 @@ class Car {
 	@Column({ type: "decimal", scale: 2, precision: 12 })
 	price: string | number;
 
+	@Column({ type: "int" })
+	stock: number;
+
 	@CreateDateColumn({ type: "date" })
 	createdAt: string;
 
 	@UpdateDateColumn({ type: "date" })
 	updatedAt: string;
+
+	@DeleteDateColumn({ type: "date", nullable: true })
+	deletedAt: string | null;
 
 	@ManyToOne(() => User, user => user.cars)
 	user: User;

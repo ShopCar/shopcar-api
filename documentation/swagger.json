@@ -1,0 +1,30 @@
+{
+	"openapi": "3.0.0",
+	"info": {
+		"title": "ShopCar API",
+		"description": "Essa é uma api para gerenciar ummarketplace de compra e venda de carros entre os usuários, com níveis de permissões e autenticação.",
+		"contact": {
+			"name": "Suport",
+			"email": "shopcar.project@gmail.com"
+		},
+		"x-logo": {
+			"url": "https://github.com/ShopCar/shopcar-api/blob/main/documentation/logo.png?raw=true",
+			"altText": "ShopCar logo"
+		},
+		"version": "1.0.0",
+		"license": {
+			"name": "MIT",
+			"url": "https://opensource.org/license/mit/"
+		}
+	},
+	"servers": [
+		{
+			"url": "http://localhost:3000",
+			"description": "Ambiente de Desenvolmento"
+		},
+		{
+			"url": "https://shopcar-api.onrender.com",
+			"description": "Ambiente de Produção"
+		}
+	]
+}

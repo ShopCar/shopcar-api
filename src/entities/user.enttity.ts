@@ -8,9 +8,13 @@ import {
 	OneToMany,
 	BeforeInsert,
 	BeforeUpdate,
-	DeleteDateColumn
+	DeleteDateColumn,
+	JoinColumn,
+	OneToOne
 } from "typeorm";
+
 import Car from "./car.enttity";
+import Address from "./address.entity";
 
 @Entity("users")
 class User {
@@ -19,24 +23,23 @@ class User {
 
 	@Column({ length: 50 })
 	name: string;
-	
+
 	@CreateDateColumn({ type: "date" })
 	birthdate: string;
 
-
-	@Column({ length: 11, unique: true })
+	@Column({ type: "varchar", length: 11, unique: true })
 	phone: string;
-	
-	@Column({ type: "text" })
-	description: string
 
-	@Column({ length: 70, unique: true })
+	@Column({ type: "text", nullable: true })
+	description: string;
+
+	@Column({ type: "varchar", length: 70, unique: true })
 	email: string;
 
-	@Column({ length: 120 })
+	@Column({ type: "varchar", length: 120 })
 	password: string;
 
-	@Column({	default: false })
+	@Column({ default: false })
 	isSeller: boolean;
 
 	@CreateDateColumn({ type: "date" })
@@ -45,7 +48,7 @@ class User {
 	@UpdateDateColumn({ type: "date" })
 	updatedAt: string;
 
-	@DeleteDateColumn({ nullable: true, type: "date" })
+	@DeleteDateColumn({ type: "date", nullable: true })
 	deletedAt: string | null;
 
 	@BeforeInsert()
@@ -56,6 +59,10 @@ class User {
 			this.password = hashSync(this.password, 10);
 		}
 	}
+
+	@JoinColumn()
+	@OneToOne(() => Address, address => address.user)
+	address: Address;
 
 	@OneToMany(() => Car, car => car.user)
 	cars: Car[];

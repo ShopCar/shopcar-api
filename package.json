@@ -6,9 +6,12 @@
 	"author": "ShopCar",
 	"license": "MIT",
 	"scripts": {
+		"build": "tsc",
+		"start": "node dist/src/server.js",
 		"test": "jest --verbose --runInBand",
-		"dev": "ts-node-dev --exit-child --transpile-only --ignore-watch node_modules --rs --cls src/server.ts",
-		"typeorm": "typeorm-ts-node-commonjs"
+		"typeorm": "typeorm-ts-node-commonjs",
+		"migration:prod": "yarn typeorm migration:run -d dist/src/data-source.js",
+		"dev": "ts-node-dev --exit-child --transpile-only --ignore-watch node_modules --rs --cls src/server.ts"
 	},
 	"dependencies": {
 		"bcryptjs": "^2.4.3",
