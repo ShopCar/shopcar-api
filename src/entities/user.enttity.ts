@@ -32,7 +32,7 @@ class User {
 	phone: string;
 
 	@Column({ type: "text", nullable: true })
-	description: string;
+	description: string | null | undefined;
 
 	@Column({ type: "varchar", length: 70, unique: true })
 	email: string;

@@ -1,8 +1,11 @@
 import { Router } from "express";
+import { ensureIsValidData } from "../middlewares";
+import { userRequestSchema } from "../schemas/users";
+import { createUserController } from "../controllers/users";
 
 const userRoutes = Router();
 
-userRoutes.post("/");
+userRoutes.post("/", ensureIsValidData(userRequestSchema), createUserController);
 
 userRoutes.get("/");
 
