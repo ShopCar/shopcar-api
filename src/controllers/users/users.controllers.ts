@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
-import { createUserService } from "../../services/users";
+import { createUserService, listUsersService } from "../../services/users";
+import { softDeleteUserService } from "../../services/users/index";
 
 const createUserController = async (req: Request, res: Response) => {
     const createdUser = await createUserService(req.body);
@@ -27,9 +28,9 @@ const softDeleteUserController = async (req: Request, res: Response) => {
 };
 
 export {
-	listUsersController,
-	createUserController,
-	updateUserController,
-	retrieveUserController,
-	softDeleteUserController
+    listUsersController,
+    createUserController,
+    updateUserController,
+    retrieveUserController,
+    softDeleteUserController,
 };

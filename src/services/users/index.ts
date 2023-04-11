@@ -1,3 +1,5 @@
-import { createUserService } from "./createUser.service"
+import { createUserService } from "./createUser.service";
+import { softDeleteUserService } from "./softDeleteUser.service";
+import { listUsersService } from "./listUsers.service";
 
-export {createUserService}
+export { createUserService, softDeleteUserService, listUsersService };

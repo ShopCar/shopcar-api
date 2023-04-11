@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-export {userRequestSchema, userUpdateSchema, userWithoutPasswordSchema, usersResponse};
+export {userRequestSchema, userUpdateSchema, userWithoutPasswordSchema, usersResponse, usersArraySchema};
 
 const userRequestSchema = z.object({
     name: z.string(),
@@ -27,5 +27,7 @@ const userWithoutPasswordSchema = z.object({
 	updatedAt: z.string(),
 	deletedAt: z.string().nullable()
 });
+
+const usersArraySchema = z.array(userWithoutPasswordSchema)
 
 const usersResponse = userWithoutPasswordSchema.array();
