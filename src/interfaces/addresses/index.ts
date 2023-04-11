@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { addressRequestSchema, addressUpdateSchema } from "../../schemas/addresses/address.schema";
+import { addressRequestSchema, addressUpdateSchema } from "../../schemas/addresses/";
 
 export { IAddressRequest, IAddressUpdate};
 
