@@ -1,4 +1,3 @@
-import { AppError } from "../../errors"
 import { userRepository } from "../../repositories"
 
 const softDeleteUserService = async (userId: string) => {
@@ -7,4 +6,4 @@ const softDeleteUserService = async (userId: string) => {
     return {}
 }
 
-export {softDeleteUserService}
+export default softDeleteUserService

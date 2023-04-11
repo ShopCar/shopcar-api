@@ -2,7 +2,6 @@ import { IUserRequest, IUserWithoutPassword } from "../../interfaces/users";
 import { userRepository } from "../../repositories";
 import { userWithoutPasswordSchema } from "../../schemas/users";
 
-export {createUserService}
 
 const createUserService = async (userData: IUserRequest): Promise<IUserWithoutPassword> => {
     const createdUser = userRepository.create({
@@ -15,4 +14,6 @@ const createUserService = async (userData: IUserRequest): Promise<IUserWithoutPa
         createdUser
     );
     return userWithoutPassword;
-};
+}
+
+export default createUserService

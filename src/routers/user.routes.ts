@@ -3,8 +3,9 @@ import { ensureAuthMiddleware, ensureIsValidData } from "../middlewares";
 import { userRequestSchema } from "../schemas/users";
 import {
     createUserController,
-    listUsersController,
+    retrieveUserController,
     softDeleteUserController,
+    updateUserController,
 } from "../controllers/users";
 import { ensureIsValidId } from "../middlewares/ensureIsValidId.middleware";
 import { userRepository } from "../repositories";
@@ -17,11 +18,9 @@ userRoutes.post(
     createUserController
 );
 
-userRoutes.get("/", listUsersController);
+userRoutes.get("/:id", ensureAuthMiddleware, ensureIsValidId(userRepository), retrieveUserController);
 
-userRoutes.get("/:id");
-
-userRoutes.patch("/:id");
+userRoutes.patch("/:id", ensureAuthMiddleware, ensureIsValidId(userRepository), updateUserController);
 
 userRoutes.delete("/:id", ensureAuthMiddleware, ensureIsValidId(userRepository), softDeleteUserController);
 
