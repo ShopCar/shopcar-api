@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { addressRequestSchema, addressResponseSchema } from "../addresses/address.schema";
 
 export {userRequestSchema, userUpdateSchema, userWithoutPasswordSchema};
 
@@ -10,7 +11,8 @@ const userRequestSchema = z.object({
 	email: z.string().email(),
     password: z.string().min(8).regex(/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/,
     "Password must contains capital letter, lowercase letter, number and special char"),
-	isSeller: z.boolean()
+	isSeller: z.boolean(),
+	address: addressRequestSchema
 });
 
 const userUpdateSchema = userRequestSchema.partial();
@@ -25,5 +27,7 @@ const userWithoutPasswordSchema = z.object({
 	isSeller: z.boolean(),
     createdAt: z.string(),
 	updatedAt: z.string(),
-	deletedAt: z.string().nullable()
+	deletedAt: z.string().nullable(),
+	address: addressResponseSchema
+
 });

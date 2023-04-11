@@ -2,11 +2,16 @@ import { userRepository } from "../../repositories"
 import { userWithoutPasswordSchema } from "../../schemas/users"
 
 const retrieveUserService = async (id: string) => {
-    const user = await userRepository.findOneBy({id})
+    const user = await userRepository.findOne({
+        where: {id},
+        relations: {
+            address: true
+        }
+    })
 
-    const validetedUsers = userWithoutPasswordSchema.parse(user)
+    const validatedUsers = userWithoutPasswordSchema.parse(user)
 
-    return validetedUsers
+    return validatedUsers
 }
 
 export default retrieveUserService
