@@ -1,7 +1,12 @@
 import { Request, Response } from "express";
+import { ICarRequest } from "../../interfaces/cars";
+import { createCarService } from "../../services/cars";
 
 const createCarController = async (req: Request, res: Response) => {
-	return res.status(201).json("newCar");
+	const body: ICarRequest = req.body
+	const userId: string = req.user.id
+	const newCar = await createCarService(body, userId)
+	return res.status(201).json(newCar);
 };
 
 const listCarsController = (req: Request, res: Response) => {

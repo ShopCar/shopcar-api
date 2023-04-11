@@ -1,8 +1,16 @@
 import { Router } from "express";
+import { ensureAuthMiddleware, ensureIsValidData } from "../middlewares";
+import { carRequestSchema } from "../schemas/cars";
+import { createCarController } from "../controllers/cars";
 
 const carRoutes = Router();
 
-carRoutes.post("/");
+carRoutes.post(
+    "/",
+    ensureAuthMiddleware,
+    ensureIsValidData(carRequestSchema),
+    createCarController
+);
 
 carRoutes.get("/");
 
