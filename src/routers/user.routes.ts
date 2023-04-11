@@ -6,6 +6,8 @@ import {
     listUsersController,
     softDeleteUserController,
 } from "../controllers/users";
+import { ensureIsValidId } from "../middlewares/ensureIsValidId.middleware";
+import { userRepository } from "../repositories";
 
 const userRoutes = Router();
 
@@ -21,6 +23,6 @@ userRoutes.get("/:id");
 
 userRoutes.patch("/:id");
 
-userRoutes.delete("/:id", ensureAuthMiddleware, softDeleteUserController);
+userRoutes.delete("/:id", ensureAuthMiddleware, ensureIsValidId(userRepository), softDeleteUserController);
 
 export default userRoutes;

@@ -10,7 +10,7 @@ const createUserService = async (userData: IUserRequest): Promise<IUserWithoutPa
     })
 
     await userRepository.save(createdUser);
-    console.log(createdUser)
+    
     const userWithoutPassword = userWithoutPasswordSchema.parse(
         createdUser
     );
