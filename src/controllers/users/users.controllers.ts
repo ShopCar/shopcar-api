@@ -1,10 +1,12 @@
 import { Request, Response } from "express";
+
 import {
   createUserService,
   listUsersService,
   updateUserService,
 } from "../../services/users";
 import { softDeleteUserService } from "../../services/users/index";
+
 
 const createUserController = async (req: Request, res: Response) => {
   const createdUser = await createUserService(req.body);
@@ -37,4 +39,5 @@ export {
   updateUserController,
   retrieveUserController,
   softDeleteUserController,
+
 };

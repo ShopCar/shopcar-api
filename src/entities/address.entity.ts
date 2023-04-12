@@ -20,10 +20,10 @@ class Address {
 	@Column({ type: "varchar", length: 2 })
 	state: string;
 
-	@Column({ type: "varchar", length: 20 })
+	@Column({ type: "varchar", length: 50 })
 	city: string;
 
-	@Column({ type: "varchar", length: 20 })
+	@Column({ type: "varchar", length: 50 })
 	district: string;
 
 	@Column({ type: "varchar", length: 50 })
@@ -32,7 +32,7 @@ class Address {
 	@Column({ type: "varchar", nullable: true, length: 10 })
 	number: string | null | undefined;
 
-	@Column({ type: "varchar", nullable: true, length: 30 })
+	@Column({ type: "varchar", nullable: true, length: 50 })
 	complement: string | null | undefined;
 
 	@CreateDateColumn({ type: "date" })
