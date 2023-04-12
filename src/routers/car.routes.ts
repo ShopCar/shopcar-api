@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { ensureAuthMiddleware, ensureIsValidData } from "../middlewares";
 import { carRequestSchema } from "../schemas/cars";
-import { createCarController } from "../controllers/cars";
+import { createCarController, deleteCarController, listCarsController } from "../controllers/cars";
 
 const carRoutes = Router();
 
@@ -12,12 +12,12 @@ carRoutes.post(
     createCarController
 );
 
-carRoutes.get("/");
+carRoutes.get("/", listCarsController);
 
 carRoutes.get("/:id");
 
 carRoutes.patch("/:id");
 
-carRoutes.delete("/:id");
+carRoutes.delete("/:id", ensureAuthMiddleware, deleteCarController);
 
 export default carRoutes;
