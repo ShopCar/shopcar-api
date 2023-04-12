@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-export { carRequestWithoutImages, carRequestSchema };
+export { carRequestWithoutImages, carRequestSchema, carUpdateSchema };
 
 const carRequestWithoutImages = z.object({
     brand: z.string(),
@@ -19,8 +19,4 @@ const carRequestSchema = carRequestWithoutImages.extend({
     image2: z.string(),
 });
 
-// const carResponseSchema = carRequestWithoutImages.extend({
-//     isPublished: z.boolean(),
-//     createdAt: z.date(),
-//     updatedAt: z.date(),
-// })
+const carUpdateSchema = carRequestSchema.partial();
