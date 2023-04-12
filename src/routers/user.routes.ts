@@ -18,10 +18,25 @@ userRoutes.post(
     createUserController
 );
 
-userRoutes.get("/:id", ensureAuthMiddleware, ensureIsValidId(userRepository), retrieveUserController);
+userRoutes.get(
+    "/:id",
+    ensureAuthMiddleware,
+    ensureIsValidId(userRepository),
+    retrieveUserController
+);
 
-userRoutes.patch("/:id", ensureAuthMiddleware, ensureIsValidId(userRepository), updateUserController);
+userRoutes.patch(
+    "/:id",
+    ensureAuthMiddleware,
+    ensureIsValidId(userRepository),
+    updateUserController
+);
 
-userRoutes.delete("/:id", ensureAuthMiddleware, ensureIsValidId(userRepository), softDeleteUserController);
+userRoutes.delete(
+    "/:id",
+    ensureAuthMiddleware,
+    ensureIsValidId(userRepository),
+    softDeleteUserController
+);
 
 export default userRoutes;
