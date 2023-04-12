@@ -1,7 +1,11 @@
 import { Router } from "express";
 import { ensureAuthMiddleware, ensureIsValidData } from "../middlewares";
 import { carRequestSchema } from "../schemas/cars";
-import { createCarController } from "../controllers/cars";
+import { createCarController, deleteCarController, listCarsController, updateCarController, retrieveCarController } from "../controllers/cars";
+import { ensureIsValidId } from "../middlewares/ensureIsValidId.middleware";
+import { carRepository } from "../repositories";
+import ensureIsSeller from "../middlewares/ensureIsSeller.middleware";
+import { carUpdateSchema } from "../schemas/cars/cars.schema";
 
 const carRoutes = Router();
 
@@ -12,12 +16,12 @@ carRoutes.post(
     createCarController
 );
 
-carRoutes.get("/");
+carRoutes.get("/", listCarsController);
 
-carRoutes.get("/:id");
+carRoutes.get("/:id", ensureIsValidId(carRepository), retrieveCarController);
 
-carRoutes.patch("/:id");
+carRoutes.patch("/:id", ensureAuthMiddleware, ensureIsSeller, ensureIsValidId(carRepository), updateCarController);
 
-carRoutes.delete("/:id");
+carRoutes.delete("/:id", ensureAuthMiddleware, ensureIsSeller, ensureIsValidId(carRepository), ensureIsValidData(carUpdateSchema), deleteCarController);
 
 export default carRoutes;
