@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import { ICarRequest } from "../../interfaces/cars";
 import { createCarService } from "../../services/cars";
 import ListAllCarsService from "../../services/cars/listCars.service";
+import deleteCarService from "../../services/cars/deleteCar.service";
 
 const createCarController = async (req: Request, res: Response) => {
 	const body: ICarRequest = req.body
@@ -24,8 +25,10 @@ const updateCarController = async (req: Request, res: Response) => {
 };
 
 const deleteCarController = async (req: Request, res: Response) => {
-	
-	return res.status(204).json();
+	const carId = req.params.id;
+	const userId = req.user.id
+	const status = await deleteCarService(carId, userId)
+	return res.status(status).json();
 };
 
 export {
