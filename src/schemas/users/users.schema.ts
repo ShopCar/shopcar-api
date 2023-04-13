@@ -27,14 +27,32 @@ const userRequestSchema = z.object({
     address: addressRequestSchema,
 });
 
-const userUpdateSchema = userRequestSchema.partial();
+const userUpdateSchema = z.object({
+    name: z.string(),
+    birthdate: z.string(),
+    phone: z
+        .string()
+        .min(10)
+        .max(11)
+        .regex(/^[0-9]+$/, "Phone number must contain only numbers"),
+    description: z.string().nullish(),
+    email: z.string().email(),
+    password: z
+        .string()
+        .min(8)
+        .regex(
+            /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/,
+            "Password must contains capital letter, lowercase letter, number and special char"
+        ),
+    isSeller: z.boolean()
+}).partial()
 
 const userWithoutPasswordSchema = z.object({
     id: z.string().uuid(),
     name: z.string(),
     birthdate: z.string(),
     phone: z.string(),
-    description: z.string().nullable(),
+    description: z.string().nullish(),
     email: z.string().email(),
     isSeller: z.boolean(),
     createdAt: z.string(),

@@ -21,7 +21,8 @@ const errorHandler = (
     }
 
     if (err instanceof ZodError) {
-        return res.status(400).json({ message: err.flatten().fieldErrors });
+        const errors = Object.keys(err.flatten().fieldErrors).length === 0? err.errors[0].message : err.flatten().fieldErrors
+        return res.status(400).json({ message: errors});
     }
 
     console.error(err);

@@ -1,7 +1,6 @@
 import { AppError } from "../../errors";
 import { IUserRequest, IUserWithoutPassword } from "../../interfaces/users";
 import { addressRepository, userRepository } from "../../repositories";
-import { userWithoutPasswordSchema } from "../../schemas/users";
 
 const createUserService = async (
     userData: IUserRequest
@@ -32,7 +31,7 @@ const createUserService = async (
 
     await userRepository.save(createdUser);
 
-    const userWithoutPassword = userWithoutPasswordSchema.parse(createdUser);
+    const {password, ...userWithoutPassword} = createdUser;
     return userWithoutPassword;
 };
 

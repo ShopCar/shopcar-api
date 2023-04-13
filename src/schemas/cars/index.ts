@@ -1,3 +1,3 @@
-import { carRequestSchema } from "./cars.schema";
+import { carRequestSchema, carRequestWithoutImages, carUpdateSchema } from "./cars.schema";
 
-export { carRequestSchema };
+export { carRequestSchema, carRequestWithoutImages, carUpdateSchema };

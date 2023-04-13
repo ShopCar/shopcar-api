@@ -4,7 +4,6 @@ import {
     ManyToOne,
     CreateDateColumn,
     UpdateDateColumn,
-    DeleteDateColumn,
     PrimaryGeneratedColumn,
     OneToOne,
     JoinColumn,

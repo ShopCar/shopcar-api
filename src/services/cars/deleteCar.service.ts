@@ -3,7 +3,7 @@ import { carRepository, userRepository } from "../../repositories"
 
 
 const deleteCarService = async (carId: string, userId: string): Promise<number> =>{
-    const user = await userRepository.findOneByOrFail({ id: userId })
+    const user = await userRepository.findOneBy({ id: userId })
 
     const carQueryBuilder = carRepository.createQueryBuilder("car")
 
@@ -12,16 +12,11 @@ const deleteCarService = async (carId: string, userId: string): Promise<number> 
     .where("car.id = :id", { id: carId })
     .getOne()
 
-
-    if(!car){
-        throw new AppError("Car not found", 404)
-    }
-
-    if(car.user.id != user.id){
+    if(car!.user.id != user!.id){
             throw new AppError("Missing permissions", 403)
     }
 
-    await carRepository.delete({ id: car.id })
+    await carRepository.delete({ id: car!.id })
 
     return 204
 }

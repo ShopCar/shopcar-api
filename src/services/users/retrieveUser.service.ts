@@ -1,7 +1,7 @@
+import { IUserWithoutPassword } from "../../interfaces/users";
 import { userRepository } from "../../repositories";
-import { userWithoutPasswordSchema } from "../../schemas/users";
 
-const retrieveUserService = async (id: string) => {
+const retrieveUserService = async (id: string): Promise<IUserWithoutPassword> => {
     const user = await userRepository.findOne({
         where: { id },
         relations: {
@@ -9,9 +9,7 @@ const retrieveUserService = async (id: string) => {
         },
     });
 
-    const validatedUsers = userWithoutPasswordSchema.parse(user);
-
-    return validatedUsers;
+    return user!;
 };
 
 export default retrieveUserService;

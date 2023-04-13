@@ -9,23 +9,23 @@ const createSessionService = async ({
     email,
     password,
 }: ILogin): Promise<object> => {
-    const searchUser = await userRepository.find({
+    const searchUser = await userRepository.findOne({
         withDeleted: true,
         where: { email: email },
-        select: { password: true, id: true, email: true },
+        select: { password: true, id: true, email: true, deletedAt: true, isSeller: true },
     });
 
-    if (searchUser.length === 0) {
+    if (!searchUser) {
         throw new AppError("Invalid user or password!", 403);
     }
 
-    if (searchUser[0].deletedAt) {
+    if (searchUser.deletedAt) {
         throw new AppError("User is not active", 400);
     }
 
     const passwordMatch = await compare(
         String(password),
-        searchUser[0].password
+        searchUser.password
     );
 
     if (!passwordMatch) {
@@ -34,16 +34,23 @@ const createSessionService = async ({
 
     const token = jwt.sign(
         {
-            isSeller: searchUser[0].isSeller,
+            isSeller: searchUser.isSeller,
         },
         process.env.SECRET_KEY!,
         {
-            subject: String(searchUser[0].id),
+            subject: String(searchUser.id),
             expiresIn: "24h",
         }
     );
-
-    return { token };
+    
+    const user = await userRepository.findOne({
+        where: {id: searchUser.id},
+        relations: {cars: true}
+    })
+    return { 
+        token,
+        user
+    };
 };
 
 export default createSessionService;

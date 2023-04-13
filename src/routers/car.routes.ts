@@ -1,6 +1,6 @@
 import { Router } from "express";
-import { ensureAuthMiddleware, ensureIsValidData } from "../middlewares";
-import { carRequestSchema } from "../schemas/cars";
+import { ensureAuthMiddleware, ensureIsValidData, ensureIsValidId, ensureIsSeller } from "../middlewares";
+import { carRequestSchema, carUpdateSchema } from "../schemas/cars";
 import {
     createCarController,
     deleteCarController,
@@ -8,16 +8,14 @@ import {
     updateCarController,
     retrieveCarController,
 } from "../controllers/cars";
-import { ensureIsValidId } from "../middlewares/ensureIsValidId.middleware";
 import { carRepository } from "../repositories";
-import ensureIsSeller from "../middlewares/ensureIsSeller.middleware";
-import { carUpdateSchema } from "../schemas/cars/cars.schema";
 
 const carRoutes = Router();
 
 carRoutes.post(
     "/",
     ensureAuthMiddleware,
+    ensureIsSeller,
     ensureIsValidData(carRequestSchema),
     createCarController
 );

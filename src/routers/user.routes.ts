@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { ensureAuthMiddleware, ensureIsValidData } from "../middlewares";
+import { ensureAuthMiddleware, ensureIsValidData, ensureIsValidId } from "../middlewares";
 import { userRequestSchema } from "../schemas/users";
 import {
     createUserController,
@@ -7,7 +7,6 @@ import {
     softDeleteUserController,
     updateUserController,
 } from "../controllers/users";
-import { ensureIsValidId } from "../middlewares/ensureIsValidId.middleware";
 import { userRepository } from "../repositories";
 
 const userRoutes = Router();
