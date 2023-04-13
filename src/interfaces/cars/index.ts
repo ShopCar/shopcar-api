@@ -1,6 +1,8 @@
 import { z } from "zod";
-import { carRequestSchema } from "../../schemas/cars/index";
+import { carRequestSchema, carUpdateSchema } from "../../schemas/cars/index";
 
-export { ICarRequest };
+export { ICarRequest, ICarUpdate};
 
 type ICarRequest = z.infer<typeof carRequestSchema>;
+
+type ICarUpdate = z.infer<typeof carUpdateSchema>;

@@ -1,6 +1,6 @@
 import { AppError } from "../../errors";
 import { IUserRequest } from "../../interfaces/users";
-import { addressRepository, userRepository } from "../../repositories";
+import { userRepository } from "../../repositories";
 
 const updateUserService = async (
     data: IUserRequest,

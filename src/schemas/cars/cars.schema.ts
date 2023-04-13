@@ -15,8 +15,9 @@ const carRequestWithoutImages = z.object({
 
 const carRequestSchema = carRequestWithoutImages.extend({
     cover: z.string(),
-    image1: z.string(),
-    image2: z.string(),
+    gallery: z.array(
+        z.string()
+    )
 });
 
 const carUpdateSchema = carRequestSchema.partial();

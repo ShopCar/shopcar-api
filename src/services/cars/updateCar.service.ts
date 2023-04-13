@@ -11,16 +11,22 @@ const updateCarService = async (
         relations: {images: true}
     })
 
-    const {cover, image1, image2, ...carData} = data
-
-    await imagesRepository.update({id: car!.images.id}, {
-        cover: cover,
-        gallery: [image1, image2],
-    });
+    const {cover, gallery, ...carData} = data
+    
+    if(cover || gallery){
+      const images = {
+        cover,
+        gallery
+      }
+      await imagesRepository.update({id: car!.images.id}, images);
+    } 
 
     await carRepository.update({id: carId}, carData);
 
-    const findCar = await carRepository.findOneBy({ id: carId });
+    const findCar = await carRepository.findOne({
+      where: { id: carId },
+      relations: {images: true}
+    });
 
   return findCar!;
 };
