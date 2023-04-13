@@ -1,27 +1,19 @@
+import { AxiosError } from "axios";
 import { AppError } from "../../errors";
 import { IUserRequest } from "../../interfaces/users";
 import { userRepository } from "../../repositories";
+import { QueryFailedError, TypeORMError } from "typeorm";
 
 const updateUserService = async (
     data: IUserRequest,
     uuid: string
 ): Promise<IUserRequest | null> => {
 
-    const searchUserByEmail = await userRepository.findOneBy({
-        email: data.email,
-    });
-    if (searchUserByEmail && searchUserByEmail.id !== uuid) {
-        throw new AppError("User with this email already exists", 409);
+    try {
+        await userRepository.update({ id: uuid }, data);
+    } catch (error: any) {
+        throw new AppError(error.detail, 409);
     }
-
-    const searchUserByphone = await userRepository.findOneBy({
-        phone: data.phone,
-    });
-    if (searchUserByphone && searchUserByphone.id !== uuid) {
-        throw new AppError("User with this phone number already exists", 409);
-    }
-
-    await userRepository.update({ id: uuid }, data);
 
     const findUser = await userRepository.findOneBy({ id: uuid });
 

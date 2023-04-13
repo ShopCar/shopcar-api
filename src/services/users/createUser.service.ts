@@ -7,32 +7,22 @@ const createUserService = async (
 ): Promise<IUserWithoutPassword> => {
     const { address, ...data } = userData;
 
-    const searchUserByEmail = await userRepository.findOneBy({
-        email: data.email,
-    });
-    if (searchUserByEmail) {
-        throw new AppError("User with this email already exists", 409);
-    }
+    try {
+        const createdAddress = addressRepository.create(address);
+        await addressRepository.save(createdAddress);
 
-    const searchUserByphone = await userRepository.findOneBy({
-        phone: data.phone,
-    });
-    if (searchUserByphone) {
-        throw new AppError("User with this phone number already exists", 409);
-    }
+        const createdUser = userRepository.create({
+            ...data,
+            address: createdAddress,
+        });
 
-    const createdAddress = addressRepository.create(address);
-    await addressRepository.save(createdAddress);
+        await userRepository.save(createdUser);
 
-    const createdUser = userRepository.create({
-        ...data,
-        address: createdAddress,
-    });
-
-    await userRepository.save(createdUser);
-
-    const {password, ...userWithoutPassword} = createdUser;
-    return userWithoutPassword;
+        const {password, ...userWithoutPassword} = createdUser;
+        return userWithoutPassword;
+    } catch (error: any) {
+        throw new AppError(error.detail, 409);
+    }  
 };
 
 export default createUserService;
