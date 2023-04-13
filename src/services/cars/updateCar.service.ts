@@ -4,7 +4,6 @@ import { carRepository, imagesRepository } from "../../repositories";
 
 const updateCarService = async (
   data: ICarRequest,
-  userId: string,
   carId: string
 ): Promise<Car> => {
     const car = await carRepository.findOne({

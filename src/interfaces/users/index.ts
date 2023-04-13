@@ -1,8 +1,8 @@
 import { z } from "zod";
 import {
-  userRequestSchema,
-  userUpdateSchema,
-  userWithoutPasswordSchema,
+    userRequestSchema,
+    userUpdateSchema,
+    userWithoutPasswordSchema,
 } from "../../schemas/users";
 
 export { IUserRequest, IUserWithoutPassword, IUserUpdate };

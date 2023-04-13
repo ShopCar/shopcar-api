@@ -2,12 +2,10 @@ import { Router } from "express";
 import { ensureAuthMiddleware, ensureIsValidData } from "../middlewares";
 import { userRequestSchema } from "../schemas/users";
 import {
-  createUserController,
-  listUsersController,
-  retrieveUserController,
-  softDeleteUserController,
-  updateUserController,
-
+    createUserController,
+    retrieveUserController,
+    softDeleteUserController,
+    updateUserController,
 } from "../controllers/users";
 import { ensureIsValidId } from "../middlewares/ensureIsValidId.middleware";
 import { userRepository } from "../repositories";
@@ -15,9 +13,9 @@ import { userRepository } from "../repositories";
 const userRoutes = Router();
 
 userRoutes.post(
-  "/",
-  ensureIsValidData(userRequestSchema),
-  createUserController
+    "/",
+    ensureIsValidData(userRequestSchema),
+    createUserController
 );
 
 userRoutes.get(
@@ -27,7 +25,6 @@ userRoutes.get(
     retrieveUserController
 );
 
-
 userRoutes.patch(
     "/:id",
     ensureAuthMiddleware,
@@ -35,6 +32,11 @@ userRoutes.patch(
     updateUserController
 );
 
-userRoutes.delete("/:id", ensureAuthMiddleware, ensureIsValidId(userRepository), softDeleteUserController);
+userRoutes.delete(
+    "/:id",
+    ensureAuthMiddleware,
+    ensureIsValidId(userRepository),
+    softDeleteUserController
+);
 
 export default userRoutes;

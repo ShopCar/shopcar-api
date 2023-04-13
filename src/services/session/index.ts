@@ -1,3 +1,3 @@
-import createSessionService from "./createSession.service"
+import createSessionService from "./createSession.service";
 
-export {createSessionService}
+export { createSessionService };

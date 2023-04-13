@@ -7,18 +7,18 @@ const carRepository: Repository<Car> = AppDataSource.getRepository(Car);
 const userRepository: Repository<User> = AppDataSource.getRepository(User);
 
 const imagesRepository: Repository<Images> =
-  AppDataSource.getRepository(Images);
+    AppDataSource.getRepository(Images);
 
 const addressRepository: Repository<Address> =
-  AppDataSource.getRepository(Address);
+    AppDataSource.getRepository(Address);
 
 const commentRepository: Repository<Comment> =
-  AppDataSource.getRepository(Comment);
+    AppDataSource.getRepository(Comment);
 
 export {
-  carRepository,
-  userRepository,
-  imagesRepository,
-  addressRepository,
-  commentRepository,
+    carRepository,
+    userRepository,
+    imagesRepository,
+    addressRepository,
+    commentRepository,
 };

@@ -27,11 +27,10 @@ const retrieveCarController = async (req: Request, res: Response) => {
 };
 
 const updateCarController = async (req: Request, res: Response) => {
-	const body: ICarRequest = req.body
-	const userId: string = req.user.id
-	const carId: string = req.params.id
-	const car = await updateCarService(body, userId, carId)
-	return res.status(200).json(car);
+    const body: ICarRequest = req.body;
+    const carId: string = req.params.id;
+    const car = await updateCarService(body, carId);
+    return res.status(200).json(car);
 };
 
 const deleteCarController = async (req: Request, res: Response) => {

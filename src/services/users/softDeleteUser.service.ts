@@ -1,9 +1,9 @@
-import { userRepository } from "../../repositories"
+import { userRepository } from "../../repositories";
 
 const softDeleteUserService = async (userId: string) => {
-    userRepository.softDelete({id: userId})
+    userRepository.softDelete({ id: userId });
 
-    return {}
-}
+    return {};
+};
 
-export default softDeleteUserService
+export default softDeleteUserService;

@@ -1,7 +1,13 @@
 import { Router } from "express";
 import { ensureAuthMiddleware, ensureIsValidData } from "../middlewares";
 import { carRequestSchema } from "../schemas/cars";
-import { createCarController, deleteCarController, listCarsController, updateCarController, retrieveCarController } from "../controllers/cars";
+import {
+    createCarController,
+    deleteCarController,
+    listCarsController,
+    updateCarController,
+    retrieveCarController,
+} from "../controllers/cars";
 import { ensureIsValidId } from "../middlewares/ensureIsValidId.middleware";
 import { carRepository } from "../repositories";
 import ensureIsSeller from "../middlewares/ensureIsSeller.middleware";
@@ -20,8 +26,21 @@ carRoutes.get("/", listCarsController);
 
 carRoutes.get("/:id", ensureIsValidId(carRepository), retrieveCarController);
 
-carRoutes.patch("/:id", ensureAuthMiddleware, ensureIsSeller, ensureIsValidId(carRepository), updateCarController);
+carRoutes.patch(
+    "/:id",
+    ensureAuthMiddleware,
+    ensureIsSeller,
+    ensureIsValidId(carRepository),
+    updateCarController
+);
 
-carRoutes.delete("/:id", ensureAuthMiddleware, ensureIsSeller, ensureIsValidId(carRepository), ensureIsValidData(carUpdateSchema), deleteCarController);
+carRoutes.delete(
+    "/:id",
+    ensureAuthMiddleware,
+    ensureIsSeller,
+    ensureIsValidId(carRepository),
+    ensureIsValidData(carUpdateSchema),
+    deleteCarController
+);
 
 export default carRoutes;

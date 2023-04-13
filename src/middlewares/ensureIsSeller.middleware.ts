@@ -11,7 +11,7 @@ const ensureIsSeller = async (
     if (!user.isSeller) {
         return res.status(403).json({ message: "Missing permissions" });
     }
-        return next();
+    return next();
 };
 
 export default ensureIsSeller;

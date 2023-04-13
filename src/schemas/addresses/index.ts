@@ -1,3 +1,7 @@
-import { addressRequestSchema, addressResponseSchema, addressUpdateSchema } from "./address.schema"
+import {
+    addressRequestSchema,
+    addressResponseSchema,
+    addressUpdateSchema,
+} from "./address.schema";
 
-export {addressRequestSchema, addressResponseSchema, addressUpdateSchema}
+export { addressRequestSchema, addressResponseSchema, addressUpdateSchema };

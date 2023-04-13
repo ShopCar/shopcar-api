@@ -1,17 +1,17 @@
-import { userRepository } from "../../repositories"
-import { userWithoutPasswordSchema } from "../../schemas/users"
+import { userRepository } from "../../repositories";
+import { userWithoutPasswordSchema } from "../../schemas/users";
 
 const retrieveUserService = async (id: string) => {
     const user = await userRepository.findOne({
-        where: {id},
+        where: { id },
         relations: {
-            address: true
-        }
-    })
+            address: true,
+        },
+    });
 
-    const validatedUsers = userWithoutPasswordSchema.parse(user)
+    const validatedUsers = userWithoutPasswordSchema.parse(user);
 
-    return validatedUsers
-}
+    return validatedUsers;
+};
 
-export default retrieveUserService
+export default retrieveUserService;

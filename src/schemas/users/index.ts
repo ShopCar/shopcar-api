@@ -1,3 +1,7 @@
-import {userRequestSchema, userUpdateSchema, userWithoutPasswordSchema} from "./users.schema";
+import {
+    userRequestSchema,
+    userUpdateSchema,
+    userWithoutPasswordSchema,
+} from "./users.schema";
 
-export {userRequestSchema, userUpdateSchema, userWithoutPasswordSchema};
+export { userRequestSchema, userUpdateSchema, userWithoutPasswordSchema };
