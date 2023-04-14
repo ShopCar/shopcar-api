@@ -14,6 +14,10 @@ const userRequestSchema = z.object({
         .min(10)
         .max(11)
         .regex(/^[0-9]+$/, "Phone number must contain only numbers"),
+    cpf: z
+        .string()
+        .length(11)
+        .regex(/^[0-9]+$/, "Phone number must contain only numbers"),
     description: z.string().nullish(),
     email: z.string().email(),
     password: z
@@ -37,6 +41,10 @@ const userUpdateSchema = z.object({
         .regex(/^[0-9]+$/, "Phone number must contain only numbers"),
     description: z.string().nullish(),
     email: z.string().email(),
+    cpf: z
+        .string()
+        .length(11)
+        .regex(/^[0-9]+$/, "Phone number must contain only numbers"),
     password: z
         .string()
         .min(8)
@@ -52,6 +60,7 @@ const userWithoutPasswordSchema = z.object({
     name: z.string(),
     birthdate: z.string(),
     phone: z.string(),
+    cpf: z.string(),
     description: z.string().nullish(),
     email: z.string().email(),
     isSeller: z.boolean(),

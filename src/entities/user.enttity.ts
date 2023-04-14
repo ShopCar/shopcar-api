@@ -31,6 +31,9 @@ class User {
     @Column({ type: "varchar", length: 11, unique: true })
     phone: string;
 
+    @Column({ type: "varchar", length: 11, unique: true })
+    cpf: string;
+
     @Column({ type: "text", nullable: true })
     description: string | null | undefined;
 
