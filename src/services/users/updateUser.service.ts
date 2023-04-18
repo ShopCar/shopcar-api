@@ -1,8 +1,6 @@
-import { AxiosError } from "axios";
 import { AppError } from "../../errors";
 import { IUserRequest } from "../../interfaces/users";
 import { userRepository } from "../../repositories";
-import { QueryFailedError, TypeORMError } from "typeorm";
 
 const updateUserService = async (
     data: IUserRequest,
