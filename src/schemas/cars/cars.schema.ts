@@ -17,7 +17,7 @@ const carRequestSchema = carRequestWithoutImages.extend({
     cover: z.string(),
     gallery: z.array(
         z.string()
-    )
+    ).max(6)
 });
 
 const carUpdateSchema = carRequestSchema.partial();
