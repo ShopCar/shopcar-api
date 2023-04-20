@@ -1,10 +1,14 @@
 import { Router } from "express";
-import { createSessionController } from "../controllers/session";
+import {
+	profileUserController,
+	createSessionController
+} from "../controllers/session";
+import { ensureAuthMiddleware } from "../middlewares";
 
 const sessionRoutes = Router();
 
 sessionRoutes.post("/login", createSessionController);
 
-sessionRoutes.get("/profile");
+sessionRoutes.get("/profile", ensureAuthMiddleware, profileUserController);
 
 export default sessionRoutes;

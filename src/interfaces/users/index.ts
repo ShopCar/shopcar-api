@@ -1,14 +1,14 @@
 import { z } from "zod";
 import {
-    userRequestSchema,
-    userUpdateSchema,
-    userWithoutPasswordSchema,
+	userRequestSchema,
+	userUpdateSchema,
+	userResponseSchema
 } from "../../schemas/users";
 
-export { IUserRequest, IUserWithoutPassword, IUserUpdate };
+export { IUserRequest, IUserResponse, IUserUpdate };
 
 type IUserRequest = z.infer<typeof userRequestSchema>;
 
-type IUserWithoutPassword = z.infer<typeof userWithoutPasswordSchema>;
+type IUserResponse = z.infer<typeof userResponseSchema>;
 
 type IUserUpdate = z.infer<typeof userUpdateSchema>;

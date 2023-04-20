@@ -1,71 +1,76 @@
 import { z } from "zod";
 import {
-    addressRequestSchema,
-    addressResponseSchema,
+	addressRequestSchema,
+	addressResponseSchema
 } from "../addresses/address.schema";
 
-export { userRequestSchema, userUpdateSchema, userWithoutPasswordSchema };
+export { userRequestSchema, userUpdateSchema, userResponseSchema };
 
-const userRequestSchema = z.object({
-    name: z.string(),
-    birthdate: z.string(),
-    phone: z
-        .string()
-        .min(10)
-        .max(11)
-        .regex(/^[0-9]+$/, "Phone number must contain only numbers"),
-    cpf: z
-        .string()
-        .length(11)
-        .regex(/^[0-9]+$/, "Phone number must contain only numbers"),
-    description: z.string().nullish(),
-    email: z.string().email(),
-    password: z
-        .string()
-        .min(8)
-        .regex(
-            /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/,
-            "Password must contains capital letter, lowercase letter, number and special char"
-        ),
-    isSeller: z.boolean(),
-    address: addressRequestSchema,
+const userSchema = z.object({
+	id: z.string().uuid(),
+	name: z.string().min(1).max(50),
+	birthdate: z.string().length(10),
+	phone: z
+		.string()
+		.min(10)
+		.max(11)
+		.regex(/^[0-9]+$/, "Phone number must contain only numbers"),
+	cpf: z
+		.string()
+		.length(11)
+		.regex(/^[0-9]+$/, "Phone number must contain only numbers"),
+	email: z.string().email().min(1).max(70),
+	password: z
+		.string()
+		.min(8)
+		.regex(
+			new RegExp(".*[A-Z].*"),
+			"Password must have at least one capital letter"
+		)
+		.regex(
+			new RegExp(".*[a-z].*"),
+			"Password must have at least one lowercase letter"
+		)
+		.regex(new RegExp(".*\\d.*"), "Password must have at least one number")
+		.regex(
+			new RegExp(".*[`~<>?,./!@#$%^&*()\\-_+=\"'|{}\\[\\];:\\\\].*"),
+			"Password must have at least one special character"
+		),
+	isSeller: z.boolean().default(false),
+	description: z.string().nullish(),
+	createdAt: z.string(),
+	updatedAt: z.string(),
+	deletedAt: z.string().nullable()
 });
 
-const userUpdateSchema = z.object({
-    name: z.string(),
-    birthdate: z.string(),
-    phone: z
-        .string()
-        .min(10)
-        .max(11)
-        .regex(/^[0-9]+$/, "Phone number must contain only numbers"),
-    description: z.string().nullish(),
-    email: z.string().email(),
-    cpf: z
-        .string()
-        .length(11)
-        .regex(/^[0-9]+$/, "Phone number must contain only numbers"),
-    password: z
-        .string()
-        .min(8)
-        .regex(
-            /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/,
-            "Password must contains capital letter, lowercase letter, number and special char"
-        ),
-    isSeller: z.boolean()
-}).partial()
+const userRequestSchema = userSchema
+	.omit({
+		id: true,
+		createdAt: true,
+		updatedAt: true,
+		deletedAt: true
+	})
+	.extend({
+		address: addressRequestSchema
+	});
 
-const userWithoutPasswordSchema = z.object({
-    id: z.string().uuid(),
-    name: z.string(),
-    birthdate: z.string(),
-    phone: z.string(),
-    cpf: z.string(),
-    description: z.string().nullish(),
-    email: z.string().email(),
-    isSeller: z.boolean(),
-    createdAt: z.string(),
-    updatedAt: z.string(),
-    deletedAt: z.string().nullable(),
-    address: addressResponseSchema,
-});
+const userUpdateSchema = userSchema
+	.pick({
+		name: true,
+		birthdate: true,
+		phone: true,
+		cpf: true,
+		email: true,
+		password: true,
+		description: true,
+		isSeller: true
+	})
+	.partial();
+
+const userResponseSchema = userSchema
+	.omit({
+		password: true
+	})
+	.extend({
+		address: addressResponseSchema
+	});
