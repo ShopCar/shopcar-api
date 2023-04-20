@@ -1,15 +1,41 @@
 import { Router } from "express";
+import { ensureAuthMiddleware, ensureIsValidData, ensureIsValidId } from "../middlewares";
+import { userRequestSchema } from "../schemas/users";
+import {
+    createUserController,
+    retrieveUserController,
+    softDeleteUserController,
+    updateUserController,
+} from "../controllers/users";
+import { userRepository } from "../repositories";
 
 const userRoutes = Router();
 
-userRoutes.post("/");
+userRoutes.post(
+    "/",
+    ensureIsValidData(userRequestSchema),
+    createUserController
+);
 
-userRoutes.get("/");
+userRoutes.get(
+    "/:id",
+    ensureAuthMiddleware,
+    ensureIsValidId(userRepository),
+    retrieveUserController
+);
 
-userRoutes.get("/:id");
+userRoutes.patch(
+    "/:id",
+    ensureAuthMiddleware,
+    ensureIsValidId(userRepository),
+    updateUserController
+);
 
-userRoutes.patch("/:id");
-
-userRoutes.delete("/:id");
+userRoutes.delete(
+    "/:id",
+    ensureAuthMiddleware,
+    ensureIsValidId(userRepository),
+    softDeleteUserController
+);
 
 export default userRoutes;

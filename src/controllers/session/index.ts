@@ -1,6 +1,6 @@
 import {
-	sessionController,
-	profileUserController
+	profileUserController,
+	createSessionController
 } from "./session.controllers";
 
-export { sessionController, profileUserController };
+export { createSessionController, profileUserController };

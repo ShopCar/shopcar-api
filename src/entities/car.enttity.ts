@@ -4,7 +4,6 @@ import {
 	ManyToOne,
 	CreateDateColumn,
 	UpdateDateColumn,
-	DeleteDateColumn,
 	PrimaryGeneratedColumn,
 	OneToOne,
 	JoinColumn,
@@ -39,16 +38,13 @@ class Car {
 	color: string;
 
 	@Column({ type: "text", nullable: true })
-	description: string;
+	description: string | null | undefined;
 
 	@Column({ default: true })
 	isPublished: boolean;
 
 	@Column({ type: "decimal", scale: 2, precision: 12 })
 	price: string | number;
-
-	@Column({ type: "int" })
-	stock: number;
 
 	@CreateDateColumn({ type: "date" })
 	createdAt: string;

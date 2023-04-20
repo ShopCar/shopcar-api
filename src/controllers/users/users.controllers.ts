@@ -1,29 +1,35 @@
 import { Request, Response } from "express";
 
-const createUserController = async (req: Request, res: Response) => {
-	return res.status(201).json("newUser");
-};
+import {
+    createUserService,
+    softDeleteUserService,
+    retrieveUserService,
+    updateUserService,
+} from "../../services/users";
 
-const listUsersController = (req: Request, res: Response) => {
-	return res.json("usersPagination");
+const createUserController = async (req: Request, res: Response) => {
+    const createdUser = await createUserService(req.body);
+    return res.status(201).json(createdUser);
 };
 
 const retrieveUserController = async (req: Request, res: Response) => {
-	return res.json("user");
+    const user = await retrieveUserService(req.params.id);
+    return res.status(200).json(user);
 };
 
 const updateUserController = async (req: Request, res: Response) => {
-	return res.json("updatedUser");
+    const user = await updateUserService(req.body, req.params.id);
+    return res.status(200).json(user);
 };
 
 const softDeleteUserController = async (req: Request, res: Response) => {
-	return res.status(204).json();
+    const user = await softDeleteUserService(req.params.id);
+    return res.status(204).json(user);
 };
 
 export {
-	listUsersController,
-	createUserController,
-	updateUserController,
-	retrieveUserController,
-	softDeleteUserController
+    createUserController,
+    updateUserController,
+    retrieveUserController,
+    softDeleteUserController,
 };
