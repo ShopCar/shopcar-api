@@ -17,16 +17,11 @@ const createSessionService = async ({
 			email: true,
 			password: true,
 			isSeller: true,
-			deletedAt: true
 		}
 	});
 
 	if (!searchUser) {
 		throw new AppError("Invalid user or password!", 403);
-	}
-
-	if (searchUser.deletedAt) {
-		throw new AppError("User is not active", 400);
 	}
 
 	const passwordMatch = await compare(password, searchUser.password);

@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 
 import {
     createUserService,
-    softDeleteUserService,
+    deleteUserService,
     retrieveUserService,
     updateUserService,
 } from "../../services/users";
@@ -22,8 +22,8 @@ const updateUserController = async (req: Request, res: Response) => {
     return res.status(200).json(user);
 };
 
-const softDeleteUserController = async (req: Request, res: Response) => {
-    const user = await softDeleteUserService(req.params.id);
+const deleteUserController = async (req: Request, res: Response) => {
+    const user = await deleteUserService(req.params.id);
     return res.status(204).json(user);
 };
 
@@ -31,5 +31,5 @@ export {
     createUserController,
     updateUserController,
     retrieveUserController,
-    softDeleteUserController,
+    deleteUserController,
 };

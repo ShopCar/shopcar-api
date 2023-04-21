@@ -52,9 +52,6 @@ class User {
     @UpdateDateColumn({ type: "date" })
     updatedAt: string;
 
-    @DeleteDateColumn({ type: "date", nullable: true })
-    deletedAt: string | null;
-
     @BeforeInsert()
     @BeforeUpdate()
     hashInsertPassword() {

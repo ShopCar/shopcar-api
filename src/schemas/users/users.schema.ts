@@ -40,7 +40,6 @@ const userSchema = z.object({
 	description: z.string().nullish(),
 	createdAt: z.string(),
 	updatedAt: z.string(),
-	deletedAt: z.string().nullable()
 });
 
 const userRequestSchema = userSchema
@@ -48,7 +47,6 @@ const userRequestSchema = userSchema
 		id: true,
 		createdAt: true,
 		updatedAt: true,
-		deletedAt: true
 	})
 	.extend({
 		address: addressRequestSchema
