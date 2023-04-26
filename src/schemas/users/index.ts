@@ -1,7 +1,15 @@
 import {
-	userRequestSchema,
 	userUpdateSchema,
-	userResponseSchema
+	userRequestSchema,
+	userResponseSchema,
+	userResetPasswordSchema,
+	sendResetPasswordEmailSchema
 } from "./users.schema";
 
-export { userRequestSchema, userUpdateSchema, userResponseSchema };
+export {
+	userUpdateSchema,
+	userRequestSchema,
+	userResponseSchema,
+	userResetPasswordSchema,
+	sendResetPasswordEmailSchema
+};

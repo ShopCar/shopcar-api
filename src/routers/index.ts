@@ -5,10 +5,12 @@ import userRoutes from "./user.routes";
 import sessionRoutes from "./session.routes";
 import addressRoutes from "./address.routes";
 import commentRoutes from "./comment.routes";
+import resetPassword from "./resetPassword.routes";
 
 const routes = Router();
 
 routes.use("/", sessionRoutes);
+routes.use("/", resetPassword);
 routes.use("/cars", carRoutes);
 routes.use("/users", userRoutes);
 routes.use("/comments", commentRoutes);
