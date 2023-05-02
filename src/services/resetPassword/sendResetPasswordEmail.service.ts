@@ -41,7 +41,7 @@ const sendResetPasswordEmailService = async (
 		name: user.name,
 		btnText: "Redefinir senha",
 		subject: "Redefinição de senha",
-		btnLink: `${frontURL}/resetPassword/${token}`,
+		btnLink: `${frontURL}/reset_password/${token}`,
 		instructions: "Clique no botão abaixo para redefinir sua senha:",
 		intro:
 			"Você recebeu este e-mail porque foi enviado um pedido de redefinição de senha para sua conta. Não esqueça, esse link é válido somente por 1h.",
