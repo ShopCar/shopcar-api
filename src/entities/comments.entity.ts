@@ -23,10 +23,10 @@ class Comment {
     @UpdateDateColumn({ type: "date" })
     updatedAt: string;
 
-    @ManyToOne(() => User, (user) => user.comments)
+    @ManyToOne(() => User, (user) => user.comments, { onDelete: "CASCADE" })
     user: User;
 
-    @ManyToOne(() => Car, (car) => car.comments)
+    @ManyToOne(() => Car, (car) => car.comments, { onDelete: "CASCADE" })
     car: Car;
 }
 
