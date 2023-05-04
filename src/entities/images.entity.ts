@@ -1,4 +1,4 @@
-import { Column, Entity, OneToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 
 import Car from "./car.enttity";
 
@@ -13,7 +13,8 @@ class Images {
     @Column({ type: "text" })
     gallery: string[];
 
-    @OneToOne(() => Car, (car) => car.images)
+    @JoinColumn()
+    @OneToOne(() => Car, (car) => car.images, { onDelete: "CASCADE" })
     car: Car;
 }
 
