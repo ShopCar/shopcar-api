@@ -2,7 +2,7 @@
 	"openapi": "3.0.0",
 	"info": {
 		"title": "ShopCar API",
-		"description": "Essa é uma api para gerenciar ummarketplace de compra e venda de carros entre os usuários, com níveis de permissões e autenticação.",
+		"description": "Essa é uma api para gerenciar um marketplace de compra e venda de carros entre os usuários, com níveis de permissões e autenticação.",
 		"contact": {
 			"name": "Suport",
 			"email": "shopcar.project@gmail.com"
@@ -26,5 +26,2028 @@
 			"url": "https://shopcar-api.onrender.com",
 			"description": "Ambiente de Produção"
 		}
-	]
+	],
+	"tags": [
+		{
+			"name": "users",
+			"description": "Operações de usuário"
+		},
+		{
+			"name": "addresses",
+			"description": "Operações sobre o endereço do usuário"
+		},
+		{
+			"name": "session",
+			"description": "Autenticação do usuário e entrada no sistema"
+		},
+		{
+			"name": "reset_password",
+			"description": "Operações de recuperação de senha do usuário"
+		},
+		{
+			"name": "cars",
+			"description": "Operações sobre os carros dos usuário"
+		},
+		{
+			"name": "comments",
+			"description": "Operações sobre os comentários dos usuário nos anúncios"
+		}
+	],
+	"paths": {
+		"/users": {
+			"post": {
+				"tags": ["users"],
+				"summary": "Criação de usuário",
+				"description": "Cria uma conta para o usuário",
+				"requestBody": {
+					"description": "Dados necessários para criar um novo usuário. Campos opcionais recebem null caso não forem enviados",
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/CreateUser"
+							}
+						}
+					}
+				},
+				"responses": {
+					"201": {
+						"description": "Cadastro realizado",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/responses/UserAddressResponse"
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Dados imcompletos ou inválidos para cadastro",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/responses/InvalidRequiredBody"
+								}
+							}
+						}
+					},
+					"409": {
+						"description": "Já existe um usuário com o cpf/email/telefone informado",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/responses/ConflictData"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/users/{id}": {
+			"get": {
+				"tags": ["users"],
+				"summary": "Obter dados de um usuário",
+				"description": "Qualquer usúario poderá ver alguns dos dados da conta de um outro usúario.",
+				"parameters": [{ "$ref": "#/components/parameters/userIdParam" }],
+				"security": [
+					{
+						"bearerAuth": []
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Usuário encontrado com sucesso",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/responses/UserAddressResponse"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Token não enviado ou inválido",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/responses/InvalidToken"
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "Usuário não encontrado",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/responses/IdNotFound"
+								}
+							}
+						}
+					}
+				}
+			},
+			"patch": {
+				"tags": ["users"],
+				"summary": "Atualização de usuário",
+				"description": "O usuário só pode atualizar dados da sua conta.",
+				"parameters": [{ "$ref": "#/components/parameters/userIdParam" }],
+				"security": [
+					{
+						"bearerAuth": []
+					}
+				],
+				"requestBody": {
+					"description": "Dados permitidos para atualização do usuário",
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/UpdateUser"
+							}
+						}
+					}
+				},
+				"responses": {
+					"200": {
+						"description": "Usuário atualizado com sucesso",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/responses/UserResponse"
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Dados imcompletos ou inválidos para cadastro",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/responses/InvalidOptionalBody"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Token não enviado ou inválido",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/responses/InvalidToken"
+								}
+							}
+						}
+					},
+					"403": {
+						"description": "Usuário sem permissão de acesso",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/responses/ForbiddenAction"
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "Usuário não encontrado",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/responses/IdNotFound"
+								}
+							}
+						}
+					},
+					"409": {
+						"description": "Já existe um usuário com o email/phone/cpf/ informado",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/responses/ConflictData"
+								}
+							}
+						}
+					}
+				}
+			},
+			"delete": {
+				"tags": ["users"],
+				"summary": "Deleção de usuário",
+				"description": "Exclui a conta do usuário com o id enviado na rota. Somente o próprio usúario pode efetuar essa ação.",
+				"parameters": [{ "$ref": "#/components/parameters/userIdParam" }],
+				"security": [
+					{
+						"bearerAuth": []
+					}
+				],
+				"responses": {
+					"204": {
+						"description": "Conta excluída com sucesso"
+					},
+					"401": {
+						"description": "Token não enviado ou inválido",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/responses/InvalidToken"
+								}
+							}
+						}
+					},
+					"403": {
+						"description": "Usuário sem permissão de acesso",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/responses/ForbiddenAction"
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "Usuário não encontrado",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/responses/IdNotFound"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/reset_password": {
+			"post": {
+				"tags": ["reset_password"],
+				"summary": "Solicitação de redefinição de senha do usuário",
+				"description": "O usuário envia seu o e-mail para receber o link com o token para mudar sua senha.",
+				"requestBody": {
+					"description": "Dado necessário para a requisição",
+					"content": {
+						"application/json": {
+							"schema": {
+								"type": "object",
+								"description": "Dado da requisição",
+								"properties": {
+									"email": {
+										"type": "string",
+										"description": "Email do cadastro do usuário",
+										"example": "alex@kenzie.com.br"
+									}
+								}
+							}
+						}
+					}
+				},
+				"responses": {
+					"200": {
+						"description": "E-mail enviado com sucesso",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"description": "Dado da requisição",
+									"properties": {
+										"message": {
+											"type": "string",
+											"description": "Mensagem de sucesso",
+											"example": "Email sent successfully"
+										}
+									}
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Dado incompleto ou incorreto",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/responses/InvalidRequiredBody"
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "Usuário não encontrado",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"description": "Mensagem de erro",
+									"properties": {
+										"message": {
+											"type": "string",
+											"example": "User was not found"
+										}
+									}
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "E-mail não enviado",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"description": "Mensagem de erro",
+									"properties": {
+										"message": {
+											"type": "string",
+											"example": "Error sending email, try again later."
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/reset_password/{token}": {
+			"patch": {
+				"tags": ["reset_password"],
+				"summary": "Redefinição de senha do usuário",
+				"description": "Por meio do token enviado e verificado, é possível o usuário mudar sua senha, enviado a nova na requisição. O link é válido por 1h.",
+				"parameters": [
+					{
+						"name": "token",
+						"in": "path",
+						"description": "Token para redefinição de senha",
+						"required": true,
+						"type": "string"
+					}
+				],
+				"requestBody": {
+					"description": "Dado necessário para a requisição",
+					"content": {
+						"application/json": {
+							"schema": {
+								"type": "object",
+								"description": "Dado da requisição",
+								"properties": {
+									"password": {
+										"type": "string",
+										"description": "Nova senha do usuário",
+										"example": "T&st123"
+									}
+								}
+							}
+						}
+					}
+				},
+				"responses": {
+					"200": {
+						"description": "Senha atualizada com sucesso",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"message": {
+											"type": "string",
+											"description": "Mensagem de sucesso",
+											"example": "Password successfully updated"
+										}
+									}
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Dados incompleto ou incorreto",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/responses/InvalidRequiredBody"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Link inválido ou expirado",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/responses/InvalidLink"
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "Token Inválido",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/responses/InvalidToken"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/login": {
+			"post": {
+				"tags": ["session"],
+				"summary": "Entrada do usuário do sistema",
+				"description": "Autenticação do usuário por meio das suas credenciais.",
+				"requestBody": {
+					"description": "Dados necessários para entrar no sistema",
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/LoginUser"
+							}
+						}
+					}
+				},
+				"responses": {
+					"200": {
+						"description": "Credenciais do usuário válidas",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/responses/UserLoginResponse"
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Dados incompletos ou incorretos",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/responses/InvalidRequiredBody"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Credenciais inválidas",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"message": {
+											"type": "string",
+											"description": "Mensagem de erro",
+											"example": "O e-mail ou a senha é inválida"
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/profile": {
+			"get": {
+				"tags": ["session"],
+				"summary": "Perfil do usuário",
+				"description": "Retorna os dados do usuário autenticado que foi identificado através do token. Rota pode ser utilizado como autologin.",
+				"security": [
+					{
+						"bearerAuth": []
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Usuário autenticado",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/responses/UserAddressResponse"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Token não enviado ou inválido",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/responses/InvalidToken"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/addresses/{id}": {
+			"get": {
+				"tags": ["addresses"],
+				"summary": "Obter dados do endereço de um usuário",
+				"description": "Somente o próprio usúario poderá realizar essa ação.",
+				"parameters": [{ "$ref": "#/components/parameters/addressIdParam" }],
+				"security": [
+					{
+						"bearerAuth": []
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Endereço encontrado com sucesso",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/responses/AddressResponse"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Token não enviado ou inválido",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/responses/InvalidToken"
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "Endereço não encontrado",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/responses/IdNotFound"
+								}
+							}
+						}
+					}
+				}
+			},
+			"patch": {
+				"tags": ["addresses"],
+				"summary": "Atualização de endereço",
+				"description": "O usuário só pode atualizar dados de seu próprio endereço.",
+				"parameters": [{ "$ref": "#/components/parameters/addressIdParam" }],
+				"security": [
+					{
+						"bearerAuth": []
+					}
+				],
+				"requestBody": {
+					"description": "Dados permitidos para atualização do endereço",
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/UpdateAddress"
+							}
+						}
+					}
+				},
+				"responses": {
+					"200": {
+						"description": "Endereço atualizado com sucesso",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/responses/AddressResponse"
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Dados imcompletos ou inválidos para atualização",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/responses/InvalidOptionalBody"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Token não enviado ou inválido",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/responses/InvalidToken"
+								}
+							}
+						}
+					},
+					"403": {
+						"description": "Usuário sem permissão de acesso",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/responses/ForbiddenAction"
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "Endereço não encontrado",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/responses/IdNotFound"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/cars": {
+			"post": {
+				"tags": ["cars"],
+				"summary": "Criação de um carro",
+				"description": "Cria um carro a ser anunciado pelo o usuário. Somente um usuário vendedor pode executar essa ação.",
+				"security": [
+					{
+						"bearerAuth": []
+					}
+				],
+				"requestBody": {
+					"description": "Dados necessários para criar de um novo carro",
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/CreateCar"
+							}
+						}
+					}
+				},
+				"responses": {
+					"201": {
+						"description": "Cadastro realizado",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/responses/CarResponse"
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Dados imcompletos ou inválidos para cadastro",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/responses/InvalidRequiredBody"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Token não enviado ou inválido",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/responses/InvalidToken"
+								}
+							}
+						}
+					},
+					"403": {
+						"description": "Usuário sem permissão de acesso",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/responses/ForbiddenAction"
+								}
+							}
+						}
+					}
+				}
+			},
+			"get": {
+				"tags": ["cars"],
+				"summary": "Lista de carros",
+				"description": "Retorna uma lista com todos os carros cadastrados que estão sendo anunciados na plataforma. Se não houver carros cadastros será retornado um array vazio.",
+				"responses": {
+					"200": {
+						"description": "Lista de todos os carros cadastrados",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "array",
+									"items": {
+										"$ref": "#/components/responses/CarResponse"
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/cars/{id}": {
+			"get": {
+				"tags": ["cars"],
+				"summary": "Obter dados de um carro",
+				"description": "Qualquer usúario poderá ver os dados do id do carro anunciado.",
+				"parameters": [{ "$ref": "#/components/parameters/carIdParam" }],
+				"responses": {
+					"200": {
+						"description": "Carro encontrado com sucesso",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/responses/CarResponse"
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "Carro não encontrado",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/responses/IdNotFound"
+								}
+							}
+						}
+					}
+				}
+			},
+			"patch": {
+				"tags": ["cars"],
+				"summary": "Atualização de um carro",
+				"description": "O usuário só pode atualizar os dados do seu próprio carro anúnciado.",
+				"parameters": [{ "$ref": "#/components/parameters/carIdParam" }],
+				"security": [
+					{
+						"bearerAuth": []
+					}
+				],
+				"requestBody": {
+					"description": "Dados permitidos para atualização do carro",
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/UpdateCar"
+							}
+						}
+					}
+				},
+				"responses": {
+					"200": {
+						"description": "Carro atualizado com sucesso",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/responses/CarImagesResponse"
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Dados imcompletos ou inválidos para atualização",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/responses/InvalidOptionalBody"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Token não enviado ou inválido",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/responses/InvalidToken"
+								}
+							}
+						}
+					},
+					"403": {
+						"description": "Usuário sem permissão de acesso",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/responses/ForbiddenAction"
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "Carro não encontrado",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/responses/IdNotFound"
+								}
+							}
+						}
+					}
+				}
+			},
+			"delete": {
+				"tags": ["cars"],
+				"summary": "Deleção de um carro",
+				"description": "Exclui o carro do usuário com o id enviado na rota. Somente o próprio usúario pode efetuar essa ação.",
+				"parameters": [{ "$ref": "#/components/parameters/carIdParam" }],
+				"security": [
+					{
+						"bearerAuth": []
+					}
+				],
+				"responses": {
+					"204": {
+						"description": "Carro excluido com sucesso"
+					},
+					"401": {
+						"description": "Token não enviado ou inválido",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/responses/InvalidToken"
+								}
+							}
+						}
+					},
+					"403": {
+						"description": "Usuário sem permissão de acesso",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/responses/ForbiddenAction"
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "Carro não encontrado",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/responses/IdNotFound"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/comments/cars/{id}": {
+			"post": {
+				"tags": ["comments"],
+				"summary": "Criação de um comentário",
+				"description": "Cria um comentário no anúncio do id do carro informado",
+				"parameters": [{ "$ref": "#/components/parameters/carIdParam" }],
+				"security": [
+					{
+						"bearerAuth": []
+					}
+				],
+				"requestBody": {
+					"description": "Dados necessários para criar de um novo comentário",
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/CommentRequest"
+							}
+						}
+					}
+				},
+				"responses": {
+					"201": {
+						"description": "Comentário realizadofeito com sucesso",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/responses/CommentRelationsResponse"
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Dados imcompletos ou inválidos para cadastro",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/responses/InvalidRequiredBody"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Token não enviado ou inválido",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/responses/InvalidToken"
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "Carro não encontrado",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/responses/IdNotFound"
+								}
+							}
+						}
+					}
+				}
+			},
+			"get": {
+				"tags": ["comments"],
+				"summary": "Lista de comentários de um carro",
+				"description": "Retorna uma lista com todos os comentários do id do carro informado. Se não houver comentários cadastrados para o carro, irá retornar um array vazio.",
+				"parameters": [{ "$ref": "#/components/parameters/carIdParam" }],
+				"security": [
+					{
+						"bearerAuth": []
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Lista de comentários do carro cadastrado",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "array",
+									"items": {
+										"$ref": "#/components/responses/CommentRelationsResponse"
+									}
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Token não enviado ou inválido",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/responses/InvalidToken"
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "Comentário não encontrado",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/responses/IdNotFound"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/comments/{id}": {
+			"patch": {
+				"tags": ["comments"],
+				"summary": "Atualização de um comentário",
+				"description": "O usuário só pode atualizar os dados do seu próprio comentário.",
+				"parameters": [{ "$ref": "#/components/parameters/commentIdParam" }],
+				"security": [
+					{
+						"bearerAuth": []
+					}
+				],
+				"requestBody": {
+					"description": "Dados permitidos para atualização do comentário",
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/CommentRequest"
+							}
+						}
+					}
+				},
+				"responses": {
+					"200": {
+						"description": "Comentário atualizado com sucesso",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/responses/CommentRelationsResponse"
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Dados imcompletos ou inválidos para atualização",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/responses/InvalidRequiredBody"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Token não enviado ou inválido",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/responses/InvalidToken"
+								}
+							}
+						}
+					},
+					"403": {
+						"description": "Usuário sem permissão de acesso",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/responses/ForbiddenAction"
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "Comentário não encontrado",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/responses/IdNotFound"
+								}
+							}
+						}
+					}
+				}
+			},
+			"delete": {
+				"tags": ["comments"],
+				"summary": "Deleção de um comentário",
+				"description": "Exclui o comentário do usuário com o id enviado na rota. Somente o próprio usúario pode efetuar essa ação.",
+				"parameters": [{ "$ref": "#/components/parameters/commentIdParam" }],
+				"security": [
+					{
+						"bearerAuth": []
+					}
+				],
+				"responses": {
+					"204": {
+						"description": "Comentário excluido"
+					},
+					"401": {
+						"description": "Token não enviado ou inválido",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/responses/InvalidToken"
+								}
+							}
+						}
+					},
+					"403": {
+						"description": "Usuário sem permissão de acesso",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/responses/ForbiddenAction"
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "Comentário não encontrado",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/responses/IdNotFound"
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	},
+	"components": {
+		"parameters": {
+			"userIdParam": {
+				"in": "path",
+				"name": "id",
+				"schema": {
+					"description": "Id do usuário",
+					"$ref": "#/components/schemas/IdParam"
+				}
+			},
+			"addressIdParam": {
+				"in": "path",
+				"name": "id",
+				"schema": {
+					"description": "Id do endereço",
+					"$ref": "#/components/schemas/IdParam"
+				}
+			},
+			"carIdParam": {
+				"in": "path",
+				"name": "id",
+				"schema": {
+					"description": "Id do carro",
+					"$ref": "#/components/schemas/IdParam"
+				}
+			},
+			"commentIdParam": {
+				"in": "path",
+				"name": "id",
+				"schema": {
+					"description": "Id do comentário",
+					"$ref": "#/components/schemas/IdParam"
+				}
+			},
+			"offsetParam": {
+				"in": "query",
+				"name": "page",
+				"schema": {
+					"type": "number",
+					"minimum": 1,
+					"default": 1,
+					"description": "O número da página a uma ser mostrada. Por padrão inicia na 1ª página."
+				}
+			},
+			"limitParam": {
+				"in": "query",
+				"name": "perPage",
+				"schema": {
+					"type": "number",
+					"minimum": 1,
+					"default": 12,
+					"description": "A quantidade de itens a serem mostrados. Por padrão a quantidade por página é 12 itens."
+				}
+			}
+		},
+		"schemas": {
+			"IdParam": {
+				"type": "string",
+				"format": "uuid",
+				"required": true
+			},
+			"CreateUser": {
+				"type": "object",
+				"properties": {
+					"name": {
+						"type": "string",
+						"description": "Nome do usuário",
+						"example": "Alex Sandro"
+					},
+					"birthdate": {
+						"type": "string",
+						"description": "Data de nascimento do usuário",
+						"example": "2000-03-27"
+					},
+					"phone": {
+						"type": "string",
+						"description": "Telefone do usuário",
+						"example": "75988445566"
+					},
+					"cpf": {
+						"type": "string",
+						"description": "CPF do usuário",
+						"example": "75988445566"
+					},
+					"email": {
+						"type": "string",
+						"description": "Email de cadastro do usuário",
+						"example": "alex@kenzie.com.br"
+					},
+					"password": {
+						"type": "string",
+						"description": "Password de cadastro do usuário",
+						"example": "P@55word"
+					},
+					"isSeller": {
+						"type": "boolean",
+						"default": false,
+						"description": "Refere-se ao tipo do usuário no sistema. Usuário padrão é false",
+						"example": true
+					},
+					"description": {
+						"type": "string",
+						"description": "Descrição sobre o usuário",
+						"example": "Revendedor autorizado"
+					},
+					"address": {
+						"$ref": "#/components/schemas/AddressRequest",
+						"required": ["zipCode", "state", "city", "district", "street"]
+					}
+				},
+				"required": [
+					"name",
+					"birthdate",
+					"phone",
+					"cpf",
+					"email",
+					"password",
+					"address"
+				]
+			},
+			"AddressRequest": {
+				"type": "object",
+				"properties": {
+					"zipCode": {
+						"type": "string",
+						"description": "CEP do endereço",
+						"example": "40470080"
+					},
+					"state": {
+						"type": "string",
+						"description": "Estado do endereço",
+						"example": "BA"
+					},
+					"city": {
+						"type": "string",
+						"description": "Cidade do endereço",
+						"example": "Salvador"
+					},
+					"district": {
+						"type": "string",
+						"description": "Bairro do endereço",
+						"example": "Lobato"
+					},
+					"street": {
+						"type": "string",
+						"description": "Rua do endereço",
+						"example": "Rua do Amparo"
+					},
+					"number": {
+						"type": "string",
+						"description": "Número da casa do endereço",
+						"example": "10"
+					},
+					"complement": {
+						"type": "string",
+						"description": "Complemento sobre o endereço",
+						"example": "3º Andar"
+					}
+				}
+			},
+			"UpdateUser": {
+				"type": "object",
+				"properties": {
+					"name": {
+						"type": "string",
+						"description": "Nome do usuário",
+						"example": "Alex Sandro"
+					},
+					"birthdate": {
+						"type": "string",
+						"description": "Data de nascimento do usuário",
+						"example": "2000-03-27"
+					},
+					"phone": {
+						"type": "string",
+						"description": "Telefone do usuário",
+						"example": "75988445566"
+					},
+					"cpf": {
+						"type": "string",
+						"description": "CPF do usuário",
+						"example": "75988445566"
+					},
+					"email": {
+						"type": "string",
+						"description": "Email de cadastro do usuário",
+						"example": "alex@kenzie.com.br"
+					},
+					"password": {
+						"type": "string",
+						"description": "Password de cadastro do usuário",
+						"example": "P@55word"
+					},
+					"isSeller": {
+						"type": "boolean",
+						"description": "Refere-se ao tipo do usuário no sistema. Usuário padrão é false",
+						"example": true
+					},
+					"description": {
+						"type": "string",
+						"description": "Descrição sobre o usuário",
+						"example": "Revendedor autorizado"
+					}
+				}
+			},
+			"LoginUser": {
+				"type": "object",
+				"properties": {
+					"email": {
+						"type": "string",
+						"description": "Email de cadastro do usuário",
+						"example": "alex@kenzie.com.br"
+					},
+					"password": {
+						"type": "string",
+						"description": "Password de cadastro do usuário",
+						"example": "P@55word"
+					}
+				},
+				"required": ["email", "password"]
+			},
+			"UpdateAddress": {
+				"$ref": "#/components/schemas/AddressRequest"
+			},
+			"CreateCar": {
+				"type": "object",
+				"properties": {
+					"brand": {
+						"type": "string",
+						"description": "Marca do carro",
+						"example": "fiat"
+					},
+					"model": {
+						"type": "string",
+						"description": "Modelo do carro",
+						"example": "UNO WAY 1.3 Flex 8V 5p"
+					},
+					"year": {
+						"type": "string",
+						"description": "Ano de lançamento do carro",
+						"example": "2021"
+					},
+					"fuel": {
+						"type": "string",
+						"description": "Tipo de combustível",
+						"example": "Flex"
+					},
+					"km": {
+						"type": "string",
+						"description": "Kilometros percorrridos pelo carro",
+						"example": "0.00"
+					},
+					"color": {
+						"type": "string",
+						"description": "Cor do carro",
+						"example": "Vermelho"
+					},
+					"description": {
+						"type": "string",
+						"description": "Descrição sobre o carro",
+						"example": "Novo"
+					},
+					"isPublished": {
+						"type": "boolean",
+						"default": true,
+						"description": "indica se o carro está sendo anunciado. Por padrão é true",
+						"example": true
+					},
+					"price": {
+						"type": "string",
+						"description": "Preço do carro",
+						"example": "59494"
+					},
+					"cover": {
+						"type": "string",
+						"description": "Link da imagem capa do carro",
+						"example": "https://www.agoramotor.com.br/wp-content/uploads/2020/08/fiat-uno-2021.jpg"
+					},
+					"gallery": {
+						"type": "array",
+						"description": "Imagens da galeria do carro",
+						"items": {
+							"type": "string",
+							"description": "Link da imagem do carro",
+							"example": "https://www.agoramotor.com.br/wp-content/uploads/2020/08/fiat-uno-2021.jpg"
+						}
+					}
+				},
+				"required": [
+					"brand",
+					"model",
+					"year",
+					"fuel",
+					"km",
+					"color",
+					"isPublished",
+					"price",
+					"cover",
+					"gallery"
+				]
+			},
+			"UpdateCar": {
+				"type": "object",
+				"properties": {
+					"brand": {
+						"type": "string",
+						"description": "Marca do carro",
+						"example": "Fiat"
+					},
+					"model": {
+						"type": "string",
+						"description": "Modelo do carro",
+						"example": "UNO WAY 1.3 Flex 8V 5p"
+					},
+					"year": {
+						"type": "string",
+						"description": "Ano de lançamento do carro",
+						"example": "2021"
+					},
+					"fuel": {
+						"type": "string",
+						"description": "Tipo de combustível",
+						"example": "Flex"
+					},
+					"km": {
+						"type": "string",
+						"description": "Kilometros percorrridos pelo carro",
+						"example": "0.00"
+					},
+					"color": {
+						"type": "string",
+						"description": "Cor do carro",
+						"example": "Vermelho"
+					},
+					"description": {
+						"type": "string",
+						"description": "Descrição sobre o carro",
+						"example": "Novo"
+					},
+					"isPublished": {
+						"type": "boolean",
+						"default": true,
+						"description": "indica se o carro está sendo anunciado. Por padrão é true",
+						"example": true
+					},
+					"price": {
+						"type": "string",
+						"description": "Preço do carro",
+						"example": "59494"
+					},
+					"cover": {
+						"type": "string",
+						"description": "Link da imagem capa do carro",
+						"example": "https://www.agoramotor.com.br/wp-content/uploads/2020/08/fiat-uno-2021.jpg"
+					},
+					"gallery": {
+						"type": "array",
+						"description": "Imagens da galeria do carro",
+						"items": {
+							"type": "string",
+							"description": "Link da imagem do carro",
+							"example": "https://www.agoramotor.com.br/wp-content/uploads/2020/08/fiat-uno-2021.jpg"
+						}
+					}
+				}
+			},
+			"CommentRequest": {
+				"type": "object",
+				"properties": {
+					"comment": {
+						"type": "string",
+						"required": true,
+						"description": "Comentário do usuário",
+						"example": "Meu primeiro comentário"
+					}
+				}
+			}
+		},
+		"responses": {
+			"UserResponse": {
+				"type": "object",
+				"properties": {
+					"id": {
+						"type": "string",
+						"description": "Identificador único do usuário",
+						"example": "74e0f318-9f10-4b46-888b-6c502ecb1caf"
+					},
+					"name": {
+						"type": "string",
+						"description": "Nome do usuário",
+						"example": "Alex Sandro"
+					},
+					"birthdate": {
+						"type": "string",
+						"description": "Data de nascimento do usuário",
+						"example": "2000-03-27"
+					},
+					"phone": {
+						"type": "string",
+						"description": "Telefone do usuário",
+						"example": "75988445566"
+					},
+					"cpf": {
+						"type": "string",
+						"description": "CPF do usuário",
+						"example": "75988445566"
+					},
+					"email": {
+						"type": "string",
+						"description": "Email de cadastro do usuário",
+						"example": "alex@kenzie.com.br"
+					},
+					"isSeller": {
+						"type": "boolean",
+						"description": "Refere-se ao tipo do usuário no sistema. Usuário padrão é false",
+						"example": true
+					},
+					"description": {
+						"type": "string",
+						"description": "Descrição sobre o usuário",
+						"example": "Revendedor autorizado"
+					},
+					"resetToken": {
+						"type": "string",
+						"description": "Token para redefinição de senha do usuário",
+						"example": "eYwaP9r86XCAbsjc2zM5CxV-KUUHGxZH2sbmIEI__lc"
+					},
+					"createdAt": {
+						"type": "string",
+						"description": "Data do cadastro do usuário",
+						"example": "2023-05-02"
+					},
+					"updatedAt": {
+						"type": "string",
+						"description": "Data de atualização feita no cadastro do usuário. Recebe o mesmo valor do \"createdAt\" na sua criação",
+						"example": "2023-05-02"
+					}
+				}
+			},
+			"UserAddressResponse": {
+				"type": "object",
+				"properties": {
+					"id": {
+						"type": "string",
+						"description": "Identificador único do usuário",
+						"example": "74e0f318-9f10-4b46-888b-6c502ecb1caf"
+					},
+					"name": {
+						"type": "string",
+						"description": "Nome do usuário",
+						"example": "Alex Sandro"
+					},
+					"birthdate": {
+						"type": "string",
+						"description": "Data de nascimento do usuário",
+						"example": "2000-03-27"
+					},
+					"phone": {
+						"type": "string",
+						"description": "Telefone do usuário",
+						"example": "75988445566"
+					},
+					"cpf": {
+						"type": "string",
+						"description": "CPF do usuário",
+						"example": "75988445566"
+					},
+					"email": {
+						"type": "string",
+						"description": "Email de cadastro do usuário",
+						"example": "alex@kenzie.com.br"
+					},
+					"isSeller": {
+						"type": "boolean",
+						"description": "Refere-se ao tipo do usuário no sistema. Usuário padrão é false",
+						"example": true
+					},
+					"description": {
+						"type": "string",
+						"description": "Descrição sobre o usuário",
+						"example": "Revendedor autorizado"
+					},
+					"resetToken": {
+						"type": "string",
+						"description": "Token para redefinição de senha do usuário",
+						"example": "eYwaP9r86XCAbsjc2zM5CxV-KUUHGxZH2sbmIEI__lc"
+					},
+					"createdAt": {
+						"type": "string",
+						"description": "Data do cadastro do usuário",
+						"example": "2023-05-02"
+					},
+					"updatedAt": {
+						"type": "string",
+						"description": "Data de atualização feita no cadastro do usuário. Recebe o mesmo valor do \"createdAt\" na sua criação",
+						"example": "2023-05-02"
+					},
+					"address": {
+						"$ref": "#/components/responses/AddressResponse"
+					}
+				}
+			},
+			"AddressResponse": {
+				"type": "object",
+				"properties": {
+					"id": {
+						"type": "string",
+						"description": "Identificador único do endereço",
+						"example": "ba9ef983-2298-4066-93f7-2e219a668137"
+					},
+					"zipCode": {
+						"type": "string",
+						"description": "CEP do endereço",
+						"example": "40470080"
+					},
+					"state": {
+						"type": "string",
+						"minimum": 2,
+						"maximum": 2,
+						"description": "Estado do endereço",
+						"example": "BA"
+					},
+					"city": {
+						"type": "string",
+						"description": "Cidade do endereço",
+						"example": "Salvador"
+					},
+					"district": {
+						"type": "string",
+						"description": "Bairro do endereço",
+						"example": "Lobato"
+					},
+					"street": {
+						"type": "string",
+						"description": "Rua do endereço",
+						"example": "Rua do Amparo"
+					},
+					"number": {
+						"type": "string",
+						"description": "Número da casa do endereço",
+						"example": "10"
+					},
+					"complement": {
+						"type": "string",
+						"description": "Complemento sobre o endereço",
+						"example": "3º Andar"
+					},
+					"createdAt": {
+						"type": "string",
+						"description": "Data do cadastro do endereço",
+						"example": "2023-05-02"
+					},
+					"updatedAt": {
+						"type": "string",
+						"description": "Data de atualização feita no cadastro do endereço. Recebe o mesmo valor do \"createdAt\" na sua criação",
+						"example": "2023-05-02"
+					}
+				}
+			},
+			"UserLoginResponse": {
+				"type": "object",
+				"properties": {
+					"token": {
+						"type": "string",
+						"format": "JWT",
+						"description": "Token JWT",
+						"example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"
+					},
+					"user": {
+						"$ref": "#/components/responses/UserAddressResponse"
+					}
+				}
+			},
+			"CarResponse": {
+				"type": "object",
+				"properties": {
+					"id": {
+						"type": "string",
+						"description": "Identificador único do carro",
+						"example": "4b809c2-2696-4608-a17f-565a178f9eed"
+					},
+					"brand": {
+						"type": "string",
+						"description": "Marca do carro",
+						"example": "Fiat"
+					},
+					"model": {
+						"type": "string",
+						"description": "Modelo do carro",
+						"example": "UNO WAY 1.3 Flex 8V 5p"
+					},
+					"year": {
+						"type": "string",
+						"description": "Ano de lançamento do carro",
+						"example": "2021"
+					},
+					"fuel": {
+						"type": "string",
+						"description": "Tipo de combustível",
+						"example": "Flex"
+					},
+					"km": {
+						"type": "string",
+						"description": "Kilometros percorrridos pelo carro",
+						"example": "0.00"
+					},
+					"color": {
+						"type": "string",
+						"description": "Cor do carro",
+						"example": "Vermelho"
+					},
+					"description": {
+						"type": "string",
+						"description": "Descrição sobre o carro",
+						"example": "Novo"
+					},
+					"isPublished": {
+						"type": "boolean",
+						"default": true,
+						"description": "indica se o carro está sendo anunciado. Por padrão é true",
+						"example": true
+					},
+					"price": {
+						"type": "string",
+						"description": "Preço do carro",
+						"example": "59494"
+					},
+					"createdAt": {
+						"type": "string",
+						"description": "Data do cadastro do carro",
+						"example": "2023-05-02"
+					},
+					"updatedAt": {
+						"type": "string",
+						"description": "Data de atualização feita no cadastro do carro. Recebe o mesmo valor do \"createdAt\" na sua criação",
+						"example": "2023-05-02"
+					},
+					"user": {
+						"$ref": "#/components/responses/UserResponse"
+					},
+					"images": {
+						"$ref": "#/components/responses/ImagensResponse"
+					}
+				}
+			},
+			"ImagensResponse": {
+				"type": "object",
+				"properties": {
+					"cover": {
+						"type": "string",
+						"description": "Link da imagem capa do carro",
+						"example": "https://www.agoramotor.com.br/wp-content/uploads/2020/08/fiat-uno-2021.jpg"
+					},
+					"gallery": {
+						"type": "array",
+						"maximum": 6,
+						"description": "Imagens da galeria do carro",
+						"items": {
+							"type": "string",
+							"description": "Link da imagem do carro",
+							"example": "https://www.agoramotor.com.br/wp-content/uploads/2020/08/fiat-uno-2021.jpg"
+						}
+					}
+				}
+			},
+			"CarImagesResponse": {
+				"type": "object",
+				"properties": {
+					"id": {
+						"type": "string",
+						"description": "Identificador único do carro",
+						"example": "4b809c2-2696-4608-a17f-565a178f9eed"
+					},
+					"brand": {
+						"type": "string",
+						"description": "Marca do carro",
+						"example": "Fiat"
+					},
+					"model": {
+						"type": "string",
+						"description": "Modelo do carro",
+						"example": "UNO WAY 1.3 Flex 8V 5p"
+					},
+					"year": {
+						"type": "string",
+						"description": "Ano de lançamento do carro",
+						"example": "2021"
+					},
+					"fuel": {
+						"type": "string",
+						"description": "Tipo de combustível",
+						"example": "Flex"
+					},
+					"km": {
+						"type": "string",
+						"description": "Kilometros percorrridos pelo carro",
+						"example": "0.00"
+					},
+					"color": {
+						"type": "string",
+						"description": "Cor do carro",
+						"example": "Vermelho"
+					},
+					"description": {
+						"type": "string",
+						"description": "Descrição sobre o carro",
+						"example": "Novo"
+					},
+					"isPublished": {
+						"type": "boolean",
+						"default": true,
+						"description": "indica se o carro está sendo anunciado. Por padrão é true",
+						"example": true
+					},
+					"price": {
+						"type": "string",
+						"description": "Preço do carro",
+						"example": "59494"
+					},
+					"createdAt": {
+						"type": "string",
+						"description": "Data do cadastro do carro",
+						"example": "2023-05-02"
+					},
+					"updatedAt": {
+						"type": "string",
+						"description": "Data de atualização feita no cadastro do carro. Recebe o mesmo valor do \"createdAt\" na sua criação",
+						"example": "2023-05-02"
+					},
+					"images": {
+						"$ref": "#/components/responses/ImagensResponse"
+					}
+				}
+			},
+			"CommentResponse": {
+				"type": "object",
+				"properties": {
+					"id": {
+						"type": "string",
+						"description": "Identificador único do comentário",
+						"example": "1c459b03-bf28-4407-aaea-546b403b1762"
+					},
+					"comment": {
+						"type": "string",
+						"description": "Comentário do usuário",
+						"example": "Meu primeiro comentário"
+					},
+					"createdAt": {
+						"type": "string",
+						"description": "Data do cadastro do comentário do usuário",
+						"example": "2023-05-02"
+					},
+					"updatedAt": {
+						"type": "string",
+						"description": "Data de atualização feita no cadastro do comentário do usuário. Recebe o mesmo valor do \"createdAt\" na sua criação",
+						"example": "2023-05-02"
+					}
+				}
+			},
+			"CommentRelationsResponse": {
+				"type": "object",
+				"properties": {
+					"id": {
+						"type": "string",
+						"description": "Identificador único do comentário",
+						"example": "252687d4-405e-447c-b4bc-3617cb26727c"
+					},
+					"comment": {
+						"type": "string",
+						"description": "Comentário do usuário",
+						"example": "Meu primeiro comentário"
+					},
+					"createdAt": {
+						"type": "string",
+						"description": "Data do cadastro do comentário do usuário",
+						"example": "2023-05-02"
+					},
+					"updatedAt": {
+						"type": "string",
+						"description": "Data de atualização feita no cadastro do comentário do usuário. Recebe o mesmo valor do \"createdAt\" na sua criação",
+						"example": "2023-05-02"
+					},
+					"car": {
+						"$ref": "#/components/responses/CarImagesResponse"
+					},
+					"user": {
+						"$ref": "#/components/responses/UserResponse"
+					}
+				}
+			},
+			"InvalidRequiredBody": {
+				"type": "object",
+				"description": "Mensagem de erro",
+				"properties": {
+					"[key]": {
+						"type": "array",
+						"items": {
+							"type": "string",
+							"example": "Required"
+						}
+					}
+				}
+			},
+			"InvalidOptionalBody": {
+				"type": "object",
+				"description": "Mensagem de erro",
+				"properties": {
+					"message": {
+						"type": "string",
+						"example": "Invalid Field(s). Must contains at least of those fields: [key, ...]"
+					}
+				}
+			},
+			"InvalidToken": {
+				"type": "object",
+				"description": "Mensagem de erro",
+				"properties": {
+					"message": {
+						"type": "string",
+						"example": "Token is missing or invalid"
+					}
+				}
+			},
+			"InvalidLink": {
+				"type": "object",
+				"properties": {
+					"message": {
+						"type": "string",
+						"description": "Mensagem de erro",
+						"example": "Invalid link or expired"
+					}
+				}
+			},
+			"IdNotFound": {
+				"type": "object",
+				"description": "Mensagem de erro",
+				"properties": {
+					"message": {
+						"type": "string",
+						"example": "Id was not found"
+					}
+				}
+			},
+			"ConflictData": {
+				"type": "object",
+				"description": "Mensagem de erro",
+				"properties": {
+					"message": {
+						"type": "string",
+						"example": "Key (key)=(value) already exists."
+					}
+				}
+			},
+			"ForbiddenAction": {
+				"type": "object",
+				"description": "Mensagem de erro",
+				"properties": {
+					"message": {
+						"type": "string",
+						"example": "Missing permissions"
+					}
+				}
+			}
+		},
+		"securitySchemes": {
+			"bearerAuth": {
+				"description": "Autenticação do usuário utilizando JWT",
+				"type": "http",
+				"scheme": "bearer",
+				"bearerFormat": "JWT"
+			}
+		},
+		"examples": {
+			"CarsPagination": {
+				"type": "object",
+				"properties": {
+					"previousPage": {
+						"type": "string",
+						"description": "O endereço da página anterior à exibida. Se não houver página anterior recebe o valor de null.",
+						"example": null
+					},
+					"nextPage": {
+						"type": "string",
+						"description": "O endereço da próxima página à exibida. Se não houver próxima página recebe o valor de null.",
+						"example": null
+					},
+					"count": {
+						"type": "number",
+						"description": "Total de itens cadastrados",
+						"example": 1
+					},
+					"data": {
+						"type": "array",
+						"items": {
+							"$ref": "#/components/responses/CarResponse"
+						}
+					}
+				}
+			},
+			"CommentsPagination": {
+				"type": "object",
+				"properties": {
+					"previousPage": {
+						"type": "string",
+						"description": "O endereço da página anterior à exibida. Se não houver página anterior recebe o valor de null.",
+						"example": null
+					},
+					"nextPage": {
+						"type": "string",
+						"description": "O endereço da próxima página à exibida. Se não houver próxima página recebe o valor de null.",
+						"example": null
+					},
+					"count": {
+						"type": "number",
+						"description": "Total de itens cadastrados",
+						"example": 1
+					},
+					"data": {
+						"type": "array",
+						"items": {
+							"$ref": "#/components/responses/CommentRelationsResponse"
+						}
+					}
+				}
+			}
+		}
+	}
 }

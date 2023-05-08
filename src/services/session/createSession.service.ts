@@ -16,7 +16,7 @@ const createSessionService = async ({
 			id: true,
 			email: true,
 			password: true,
-			isSeller: true,
+			isSeller: true
 		}
 	});
 
@@ -43,7 +43,9 @@ const createSessionService = async ({
 
 	const userResponse = await userRepository.findOne({
 		where: { id: searchUser.id },
-		relations: { cars: true }
+		relations: {
+			address: true
+		}
 	});
 
 	return {

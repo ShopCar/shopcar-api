@@ -1,15 +1,13 @@
 import {
-    listCommentsController,
-    createCommentController,
-    updateCommentController,
-    deleteCommentController,
-    retrieveCommentController,
+	createCommentController,
+	updateCommentController,
+	deleteCommentController,
+	listCarCommentsController
 } from "./comments.controllers";
 
 export {
-    listCommentsController,
-    createCommentController,
-    updateCommentController,
-    deleteCommentController,
-    retrieveCommentController,
+	createCommentController,
+	updateCommentController,
+	deleteCommentController,
+	listCarCommentsController
 };
