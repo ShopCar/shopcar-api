@@ -11,10 +11,6 @@ app.use(express.json());
 
 app.use(cors());
 
-const options = {
-	explorer: true
-};
-
 app.use(
 	"/docs",
 	swaggerUi.serve,

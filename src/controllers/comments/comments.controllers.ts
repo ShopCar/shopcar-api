@@ -3,10 +3,8 @@ import { ICommentReq } from "../../interfaces/comments/index";
 import {
 	createCommentService,
 	deleteCommentService,
-	listCarCommentsService,
-	listCommentsService,
-	retrieveCommentService,
-	updateCommentService
+	updateCommentService,
+	listCarCommentsService
 } from "../../services/comments";
 
 const createCommentController = async (req: Request, res: Response) => {
@@ -15,17 +13,6 @@ const createCommentController = async (req: Request, res: Response) => {
 	const userId: string = req.user.id;
 	const newComment = await createCommentService(body, carId, userId);
 	return res.status(201).json(newComment);
-};
-
-const listCommentsController = async (req: Request, res: Response) => {
-	const comments = await listCommentsService();
-	return res.status(200).json(comments);
-};
-
-const retrieveCommentController = async (req: Request, res: Response) => {
-	const carId: string = req.params.id;
-	const comment = await retrieveCommentService(carId);
-	return res.json(comment);
 };
 
 const updateCommentController = async (req: Request, res: Response) => {
@@ -48,10 +35,8 @@ const listCarCommentsController = async (req: Request, res: Response) => {
 };
 
 export {
-	listCommentsController,
 	createCommentController,
 	updateCommentController,
 	deleteCommentController,
-	retrieveCommentController,
 	listCarCommentsController
 };

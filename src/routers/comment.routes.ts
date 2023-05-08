@@ -1,17 +1,11 @@
 import { Router } from "express";
-import {
-	ensureAuthMiddleware,
-	ensureIsValidData,
-	ensureIsValidId
-} from "../middlewares";
 import { carRepository, commentRepository } from "../repositories";
+import { ensureAuthMiddleware, ensureIsValidId } from "../middlewares";
 import {
 	createCommentController,
 	deleteCommentController,
-	listCarCommentsController,
-	listCommentsController,
-	retrieveCommentController,
-	updateCommentController
+	updateCommentController,
+	listCarCommentsController
 } from "../controllers/comments";
 
 const commentRoutes = Router();
@@ -23,16 +17,7 @@ commentRoutes.post(
 	createCommentController
 );
 
-commentRoutes.get("/", listCommentsController);
-
 commentRoutes.get("/cars/:id", listCarCommentsController);
-
-commentRoutes.get(
-	"/:id",
-	ensureAuthMiddleware,
-	ensureIsValidId(commentRepository),
-	retrieveCommentController
-);
 
 commentRoutes.patch(
 	"/:id",
