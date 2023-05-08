@@ -15,7 +15,7 @@ const sendResetPasswordEmailService = async (
 	});
 
 	if (!user) {
-		throw new AppError("user not found", 404);
+		throw new AppError("User not found", 404);
 	}
 
 	const resetToken = jwt.sign(

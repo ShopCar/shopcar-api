@@ -7,8 +7,7 @@ const profileUserService = async (id: string): Promise<User> => {
 			id
 		},
 		relations: {
-			address: true,
-			cars: true
+			address: true
 		}
 	});
 

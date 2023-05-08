@@ -10,7 +10,7 @@ const userResetPasswordService = async ({
 	token
 }: IUserResetPassword): Promise<string> => {
 	if (!token) {
-		throw new AppError("Token was not found", 404);
+		throw new AppError("Token is missing or invalid", 404);
 	}
 
 	const user = await userRepository.findOne({
@@ -20,7 +20,7 @@ const userResetPasswordService = async ({
 	});
 
 	if (!user) {
-		throw new AppError("Invalid link or expired");
+		throw new AppError("Invalid link or expired", 401);
 	}
 
 	jwt.verify(
@@ -28,7 +28,7 @@ const userResetPasswordService = async ({
 		process.env.SECRET_KEY!,
 		(error, decoded: any) => {
 			if (error) {
-				throw new AppError("Invalid link or expired");
+				throw new AppError("Invalid link or expired", 401);
 			}
 		}
 	);
