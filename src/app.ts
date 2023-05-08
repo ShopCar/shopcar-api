@@ -11,7 +11,21 @@ app.use(express.json());
 
 app.use(cors());
 
-app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+app.use(
+	"/docs",
+	swaggerUi.serve,
+	swaggerUi.setup(swaggerDocument, {
+		explorer: true
+	})
+);
+
+app.get("/swagger", (request, response) => {
+	return response.sendFile(process.cwd() + "/documentation/swagger.json");
+});
+
+app.get("/", (request, response) => {
+	return response.sendFile(process.cwd() + "/documentation/index.html");
+});
 
 app.use(routes);
 

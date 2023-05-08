@@ -4,7 +4,7 @@ import { userRequestSchema } from "../schemas/users";
 import {
     createUserController,
     retrieveUserController,
-    softDeleteUserController,
+    deleteUserController,
     updateUserController,
 } from "../controllers/users";
 import { userRepository } from "../repositories";
@@ -35,7 +35,7 @@ userRoutes.delete(
     "/:id",
     ensureAuthMiddleware,
     ensureIsValidId(userRepository),
-    softDeleteUserController
+    deleteUserController
 );
 
 export default userRoutes;

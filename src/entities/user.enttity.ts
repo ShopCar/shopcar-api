@@ -8,7 +8,6 @@ import {
     OneToMany,
     BeforeInsert,
     BeforeUpdate,
-    DeleteDateColumn,
     JoinColumn,
     OneToOne,
 } from "typeorm";
@@ -46,14 +45,14 @@ class User {
     @Column({ default: false })
     isSeller: boolean;
 
+    @Column({ type: "text", nullable: true })
+    resetToken: string | null;
+
     @CreateDateColumn({ type: "date" })
     createdAt: string;
 
     @UpdateDateColumn({ type: "date" })
     updatedAt: string;
-
-    @DeleteDateColumn({ type: "date", nullable: true })
-    deletedAt: string | null;
 
     @BeforeInsert()
     @BeforeUpdate()
@@ -65,13 +64,13 @@ class User {
     }
 
     @JoinColumn()
-    @OneToOne(() => Address, (address) => address.user)
+    @OneToOne(() => Address, (address) => address.user, { cascade: true })
     address: Address;
 
-    @OneToMany(() => Car, (car) => car.user)
+    @OneToMany(() => Car, (car) => car.user, { cascade: true })
     cars: Car[];
 
-    @OneToMany(() => Comment, (comment) => comment.user)
+    @OneToMany(() => Comment, (comment) => comment.user, { cascade: true })
     comments: Comment[];
 }
 

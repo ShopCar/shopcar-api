@@ -4,7 +4,13 @@ import {
 	addressResponseSchema
 } from "../addresses/address.schema";
 
-export { userRequestSchema, userUpdateSchema, userResponseSchema };
+export {
+	userUpdateSchema,
+	userRequestSchema,
+	userResponseSchema,
+	userResetPasswordSchema,
+	sendResetPasswordEmailSchema
+};
 
 const userSchema = z.object({
 	id: z.string().uuid(),
@@ -38,17 +44,17 @@ const userSchema = z.object({
 		),
 	isSeller: z.boolean().default(false),
 	description: z.string().nullish(),
+	resetToken: z.string().nullable(),
 	createdAt: z.string(),
-	updatedAt: z.string(),
-	deletedAt: z.string().nullable()
+	updatedAt: z.string()
 });
 
 const userRequestSchema = userSchema
 	.omit({
 		id: true,
+		resetToken: true,
 		createdAt: true,
-		updatedAt: true,
-		deletedAt: true
+		updatedAt: true
 	})
 	.extend({
 		address: addressRequestSchema
@@ -74,3 +80,11 @@ const userResponseSchema = userSchema
 	.extend({
 		address: addressResponseSchema
 	});
+
+const sendResetPasswordEmailSchema = userSchema.pick({
+	email: true
+});
+
+const userResetPasswordSchema = userSchema.pick({
+	password: true
+});

@@ -5,6 +5,7 @@ import {
     CreateDateColumn,
     UpdateDateColumn,
     PrimaryGeneratedColumn,
+    JoinColumn,
 } from "typeorm";
 
 import User from "./user.enttity";
@@ -41,7 +42,8 @@ class Address {
     @UpdateDateColumn({ type: "date" })
     updatedAt: string;
 
-    @OneToOne(() => User, (user) => user.address)
+    @JoinColumn()
+    @OneToOne(() => User, (user) => user.address, { onDelete: "CASCADE" })
     user: User;
 }
 

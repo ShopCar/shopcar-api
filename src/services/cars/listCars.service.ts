@@ -1,11 +1,9 @@
-import { carRepository } from "../../repositories"
-
-
+import { carRepository } from "../../repositories";
 
 const ListAllCarsService = async () => {
-    const carList = await carRepository.find({ relations: ["user", "images"] })
+    const carList = await carRepository.find({ relations: ["user", "images"] });
 
-    return carList
-}
+    return carList;
+};
 
-export default ListAllCarsService
+export default ListAllCarsService;

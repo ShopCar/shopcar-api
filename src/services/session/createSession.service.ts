@@ -16,17 +16,12 @@ const createSessionService = async ({
 			id: true,
 			email: true,
 			password: true,
-			isSeller: true,
-			deletedAt: true
+			isSeller: true
 		}
 	});
 
 	if (!searchUser) {
 		throw new AppError("Invalid user or password!", 403);
-	}
-
-	if (searchUser.deletedAt) {
-		throw new AppError("User is not active", 400);
 	}
 
 	const passwordMatch = await compare(password, searchUser.password);
@@ -48,7 +43,9 @@ const createSessionService = async ({
 
 	const userResponse = await userRepository.findOne({
 		where: { id: searchUser.id },
-		relations: { cars: true }
+		relations: {
+			address: true
+		}
 	});
 
 	return {

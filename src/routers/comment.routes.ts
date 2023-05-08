@@ -1,17 +1,36 @@
 import { Router } from "express";
-import { ensureAuthMiddleware, ensureIsValidData, ensureIsValidId } from "../middlewares";
-import { commentRepository } from "../repositories";
+import { carRepository, commentRepository } from "../repositories";
+import { ensureAuthMiddleware, ensureIsValidId } from "../middlewares";
+import {
+	createCommentController,
+	deleteCommentController,
+	updateCommentController,
+	listCarCommentsController
+} from "../controllers/comments";
 
 const commentRoutes = Router();
 
-commentRoutes.post("/", ensureAuthMiddleware, );
+commentRoutes.post(
+	"/cars/:id",
+	ensureAuthMiddleware,
+	ensureIsValidId(carRepository),
+	createCommentController
+);
 
-commentRoutes.get("/");
+commentRoutes.get("/cars/:id", listCarCommentsController);
 
-commentRoutes.get("/:id", ensureAuthMiddleware, ensureIsValidId(commentRepository));
+commentRoutes.patch(
+	"/:id",
+	ensureAuthMiddleware,
+	ensureIsValidId(commentRepository),
+	updateCommentController
+);
 
-commentRoutes.patch("/:id", ensureAuthMiddleware, ensureIsValidId(commentRepository));
-
-commentRoutes.delete("/:id", ensureAuthMiddleware, ensureIsValidId(commentRepository));
+commentRoutes.delete(
+	"/:id",
+	ensureAuthMiddleware,
+	ensureIsValidId(commentRepository),
+	deleteCommentController
+);
 
 export default commentRoutes;
