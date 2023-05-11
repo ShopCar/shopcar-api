@@ -1,12 +1,12 @@
 import { carRepository } from "../../repositories";
 
 const retrieveCarService = async (carId: string) => {
-    const car = await carRepository.findOne({
-        where: { id: carId },
-        relations: {images: true, user: true}
-    });
+  const car = await carRepository.findOne({
+    where: { id: carId },
+    relations: { images: true, user: true, imagesBase64: true },
+  });
 
-    return car;
+  return car;
 };
 
 export default retrieveCarService;
