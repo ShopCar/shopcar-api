@@ -17,11 +17,11 @@ class Comment {
     @Column({ type: "text" })
     comment: string;
 
-    @CreateDateColumn({ type: "date" })
-    createdAt: string;
+    @CreateDateColumn({ type: "timestamp" })
+    createdAt: Date | String;
 
-    @UpdateDateColumn({ type: "date" })
-    updatedAt: string;
+    @UpdateDateColumn({ type: "timestamp" })
+    updatedAt: Date | String;
 
     @ManyToOne(() => User, (user) => user.comments, { onDelete: "CASCADE" })
     user: User;
