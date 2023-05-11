@@ -3,6 +3,7 @@ import {
     updateUserController,
     retrieveUserController,
     deleteUserController,
+    carsByUserController
 } from "./users.controllers";
 
 export {
@@ -10,4 +11,5 @@ export {
     updateUserController,
     retrieveUserController,
     deleteUserController,
+    carsByUserController
 };

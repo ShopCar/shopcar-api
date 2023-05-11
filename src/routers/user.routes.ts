@@ -6,6 +6,7 @@ import {
     retrieveUserController,
     deleteUserController,
     updateUserController,
+    carsByUserController,
 } from "../controllers/users";
 import { userRepository } from "../repositories";
 
@@ -37,5 +38,11 @@ userRoutes.delete(
     ensureIsValidId(userRepository),
     deleteUserController
 );
+
+userRoutes.get(
+    "/:id/cars",
+    ensureIsValidId(userRepository),
+    carsByUserController
+)
 
 export default userRoutes;

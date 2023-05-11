@@ -5,6 +5,7 @@ import {
     deleteUserService,
     retrieveUserService,
     updateUserService,
+    carsByUserService
 } from "../../services/users";
 
 const createUserController = async (req: Request, res: Response) => {
@@ -27,9 +28,15 @@ const deleteUserController = async (req: Request, res: Response) => {
     return res.status(204).json(user);
 };
 
+const carsByUserController = async (req: Request, res: Response) => {
+    const user = await carsByUserService(req.params.id);
+    return res.status(200).json(user);
+};
+
 export {
     createUserController,
     updateUserController,
     retrieveUserController,
     deleteUserController,
+    carsByUserController
 };

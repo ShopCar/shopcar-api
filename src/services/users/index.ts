@@ -1,3 +1,4 @@
+import carsByUserService from "./carsByUser.service";
 import createUserService from "./createUser.service";
 import deleteUserService from "./deleteUser.service";
 import retrieveUserService from "./retrieveUser.service";
@@ -8,4 +9,5 @@ export {
     deleteUserService,
     retrieveUserService,
     updateUserService,
+    carsByUserService
 };
